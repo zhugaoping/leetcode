@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int> > &matrix, int target) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int rsize = matrix.size();
+        if (rsize == 0)
+            return false;
+        int csize = matrix[0].size();
+        if (csize == 0)
+            return false;
+        int r = 0;
+        int c = csize - 1;
+        while ((r < rsize) && (c >= 0)) {
+            if (matrix[r][c] == target)
+                return true;
+            else if (matrix[r][c] > target)
+                c--;
+            else if (matrix[r][c] < target)
+                r++;
+        }
+        
+        return false;
+        
+    }
+};

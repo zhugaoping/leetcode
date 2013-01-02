@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int numDistinct(string S, string T) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int ssize = S.size();
+        int tsize = T.size();
+        if (ssize == 0)
+            return 0;
+        if (tsize == 0)
+            return ssize + 1;
+        int plan[tsize][ssize];
+        plan[0][0] = (S[0] == T[0])?1:0;
+        for (int i = 1; i < ssize; i++)
+            plan[0][i] = plan[0][i-1] + (S[i] == T[0]);
+        for (int i = 1; i < tsize; i++) {
+            plan[i][0] = 0;;
+            for (int j = 1; j <= ssize; j++) {
+                plan[i][j] = plan[i][j-1] + ((S[j] == T[i])?plan[i-1][j-1]:0);
+            }
+        }
+        return plan[tsize - 1][ssize - 1];   
+    }
+};

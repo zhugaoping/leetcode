@@ -1,0 +1,58 @@
+class Solution {
+public:
+    int largestRectangleArea(vector<int> &height) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int size = height.size();
+        if (size == 0)
+            return 0;
+        int p;
+        int l[size];
+        int r[size];
+        vector<int> b;
+        for (int i = 0; i < size; i++) {
+            if ((b.size() == 0) || (height[i] >= height[b.back()]))
+                b.push_back(i);
+            else {
+                p = b.back();
+                while ((b.size() > 0) && (height[i] < height[b.back()])) {
+                    r[b.back()] = p - b.back(); 
+                    b.pop_back();
+                }
+                b.push_back(i);
+            }
+        }
+        if (b.size() > 0) {
+            p = b.back();
+            while (b.size() > 0) {
+                r[b.back()] = p - b.back();
+                b.pop_back();
+            }
+        } 
+        for (int i = size - 1; i >= 0; i--) {
+            if ((b.size() == 0) || (height[i] >= height[b.back()]))
+                b.push_back(i);
+            else {
+                p = b.back();
+                while ((b.size() > 0) && (height[i] < height[b.back()])) {
+                    l[b.back()] = b.back() - p; 
+                    b.pop_back();
+                }
+                b.push_back(i);
+            }
+        }
+        if (b.size() > 0) {
+            p = b.back();
+            while (b.size() > 0) {
+                l[b.back()] = b.back() - p;
+                b.pop_back();
+            }
+        } 
+        int max = 0;
+        for (int i = 0; i < size; i++) {
+            if (height[i]*(l[i] + r[i] + 1) > max)
+                max = height[i]*(l[i] + r[i] + 1);
+        }
+        return max;
+    }
+};

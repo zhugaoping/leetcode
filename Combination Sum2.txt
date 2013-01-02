@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<vector<int> > rs;
+        if (num.size() == 0)
+            return rs;
+        sort(num.begin(), num.end());
+        vector<int> r;
+        plan(rs, r, num, target, 0);
+        return rs;
+    }
+    void plan(vector<vector<int> >& rs, vector<int>& r, vector<int>& c, int t, int d) {
+        if (t == 0) {
+            rs.push_back(r);
+            return;
+        }
+        if (d == c.size())
+            return;
+        int p = d+1;
+        while ((p < c.size()) && (c[p] == c[p-1]))
+            p++;
+        int num = p - d;
+	int j
+        for (; j <= num; j++) {
+            if (j*c[d] > t)
+                break;
+            plan(rs, r, c, t - j*c[d], p);
+	    r.push_back(c[d]);
+            
+        }
+	for (; j>0; j--)
+            r.pop_back();
+        
+    }
+};

@@ -1,0 +1,56 @@
+class Solution {
+public:
+    vector<string> fullJustify(vector<string> &words, int L) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<string> rs;
+        int size = words.size();
+        if (size == 0) {
+            rs.push_back("");
+            return rs;
+        }
+        if (L <= 0) {
+            rs.push_back("");
+            return rs;
+        }
+        int p = 0;
+        while (p < size) {
+            int num = 0;
+            string r = "";
+            vector<string> b;
+            while ((p < size) && (num + b.size() + words[p].size() <= L)) {
+                b.push_back(words[p++]);
+                num += b.back().size();
+            }
+            if (b.size() == 1) {
+                r += b[0];
+                r += string(L - b[0].size(), ' ');
+                rs.push_back(r);
+            }
+            else {
+                if (p != size) {
+                    int space = L - num;
+                    int width = space/(b.size() - 1);
+                    int spare = space%(b.size() - 1);
+                    r = b[0];
+                    for (int i = 1; i < b.size(); i++) {
+                        r += (i <= spare)?string(width+1, ' '):string(width, ' ');
+                        r += b[i];
+                    }
+                }
+                else {
+                    r = b[0];
+                    for (int i = 1; i < b.size(); i++) {
+                        r += " ";
+                        r += b[i];
+                    }
+                    if (r.size() < L) {
+                        r += string(L-r.size(), ' ');
+                    }
+                }
+                rs.push_back(r);
+            }
+        }
+        return rs;
+    }
+};

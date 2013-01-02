@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        bool use[255];
+        memset(use, 0x00, sizeof(bool)*255);
+        int max = 0;
+        list<char> r;
+        for (int i = 0; i < s.size(); i++) {
+            char c = s[i];
+            if (!use[c]) {
+                use[c] = true;
+                r.push_back(c);
+                if (r.size() > max)
+                    max = r.size();
+            }
+            else {
+                while (r.size() > 0) {
+                    char t = *r.begin();
+                    use[t] = false;
+                    r.erase(r.begin());
+                    if (t == c)
+                        break;
+                }
+                use[c] = true;
+                r.push_back(c);
+            }
+        }
+        return max;
+    }
+};

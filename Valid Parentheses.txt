@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool isValid(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int size = s.size();
+        if (size == 0)
+            return true;
+        vector<char> b;
+        int p = 0;
+        while (p < size) {
+            if ((s[p] == '(') || (s[p] == '[') || (s[p] == '{'))
+                b.push_back(s[p]);
+            if (s[p] == ')') {
+                if ((b.size() > 0) && (b.back() == '('))
+                    b.pop_back();
+                else
+                    return false;
+            }
+            if (s[p] == ']') {
+                if ((b.size() > 0) && (b.back() == '['))
+                    b.pop_back();
+                else
+                    return false;
+            }
+            if (s[p] == '}') {
+                if ((b.size() > 0) && (b.back() == '{'))
+                    b.pop_back();
+                else
+                    return false;
+            }
+            p++;
+        }
+        if (b.size() == 0)
+            return true;
+        else
+            return false;
+    }
+};

@@ -1,0 +1,45 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode *sortedListToBST(ListNode *head) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<int> num;
+        while (head != NULL) {
+            num.push_back(head->val);
+            head = head->next;
+        }
+          if (num.size() == 0)
+            return NULL;
+        else
+            return createNode(num, 0, num.size()-1);
+        
+    }
+    TreeNode* createNode(vector<int>& num, int s, int r) {
+        if (s > r)
+            return NULL;
+        else {
+            int p = (s+r)/2;
+            TreeNode* node = new TreeNode(num[p]);
+            node->left = createNode(num, s, p-1);
+            node->right = createNode(num, p+1, r);
+            return node;
+        }
+    }
+};

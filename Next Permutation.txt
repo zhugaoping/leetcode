@@ -1,0 +1,39 @@
+class Solution {
+public:
+    void nextPermutation(vector<int> &num) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int size = num.size();
+        if (size <= 1)
+            return;
+        int i = size - 2;
+        multiset<int> b;
+        b.insert(num[size-1]);
+        for (; i >= 0; i--) {
+            if (num[i] < *(b.rbegin()))
+                break;
+            else
+                b.insert(num[i]);
+        }
+        if (i == -1)
+            sort(num.begin(), num.end());
+        else {
+            int t = num[i];
+            set<int>::iterator p = b.begin();
+            while (p != b.end()) {
+                if (t < *p) {
+                    num[i] = *p;
+                    b.erase(p);
+                    break;
+                }
+                p++;
+            }
+            b.insert(t);
+            p = b.begin();
+            for (int j = i+1; j < size; j++) {
+                num[j] = *p;
+                p++;
+            }
+        }
+    }
+};

@@ -1,0 +1,68 @@
+class Solution {
+public:
+    string minWindow(string S, string T) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int ssize = S.size();
+        int tsize = T.size();
+        if (ssize == 0)
+            return "";
+        if (tsize == 0)
+            return "";
+        string result;
+        int t[255], s[255], tnum = 0, snum = 0;
+        set<char> pos;
+        memset(t, 0x00, sizeof(int)*255);
+        memset(s, 0x00, sizeof(int)*255);
+        for (int i = 0; i < tsize; i++) {
+            t[T[i]]++;
+            tnum++;
+            pos.insert(T[i]);
+        }
+        int min = ssize+1;
+        int sta = 0;
+        while((sta < ssize) && (t[S[sta]] == 0))
+            sta++;
+        for (int i = sta; i < ssize; i++) {
+            if (t[S[i]] > 0) {
+                s[S[i]]++;
+                snum++;
+                if (s[S[i]] > t[S[i]]) {
+                    while (true) {
+                        if (t[S[sta]] == 0) {
+                            sta++;
+                            continue;
+                        }
+                        else {
+                            if (s[S[sta]] > t[S[sta]]) {
+                                s[S[sta]]--;
+                                sta++;
+                                snum--;
+                            }
+                            else
+                                break;
+                        }
+                    }
+                }
+                if ((snum >= tnum) && (check(s, t, pos)) && ((i + 1 - sta) < min)) {
+                    min = i + 1 - sta;
+                    result = S.substr(sta, min);
+                }
+            }
+        }
+        return result;
+        
+    }
+    bool check(int* s, int* t, set<char>& pos) {
+        bool flag = true;
+        set<char>::iterator p = pos.begin();
+        while (p != pos.end()) {
+            if (s[*p] < t[*p]) {
+                flag = false;
+                break;
+            }
+            p++;
+        }
+        return flag;
+    }
+};

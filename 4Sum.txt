@@ -1,0 +1,50 @@
+class Solution {
+public:
+    vector<vector<int> > fourSum(vector<int> &num, int target) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<vector<int> > rs;
+        int size = num.size();
+        if (size < 4)
+            return rs;
+        sort(num.begin(), num.end());
+        for (int i = 0; i < size - 3; i++) {
+            if ((i > 0) && (num[i] == num[i-1]))
+                continue;
+            for (int j = i + 1; j < size - 2; j++) {
+                if ((j > i + 1) && (num[j] == num[j-1]))
+                    continue;
+                int s = j + 1;
+                int e = size - 1;
+                while (s < e) {
+                    int add = num[i] + num[j] + num[s] + num[e];
+                    if (add < target) {
+                        s++;
+                        while ((s < e) && (num[s] == num[s-1]))
+                            s++;
+                    }
+                    else if (add > target) {
+                        e--;
+                        while ((s < e) && (num[e] == num[e+1]))
+                            e--;
+                    }
+                    else {
+                        vector<int> r;
+                        r.push_back(num[i]);
+                        r.push_back(num[j]);
+                        r.push_back(num[s]);
+                        r.push_back(num[e]);
+                        rs.push_back(r);
+                        s++;
+                        e--;
+                        while ((s < e) && (num[s] == num[s-1]))
+                            s++;
+                        while ((s < e) && (num[e] == num[e+1]))
+                            e--;
+                    }
+                }
+            }
+        }
+        return rs;
+    }
+};

@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int totalNQueens(int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int result = 0;
+        if (n == 0)
+            return result;
+        vector<int> r(n, 0);
+        vector<int> u(n, 0);
+        plan(result, r, u, 0);
+        return result;
+    }
+    void plan(int& result, vector<int>& r, vector<int>& u, int d) {
+        if (d == r.size())
+            result++;
+        else {
+            for (int i = 0; i < r.size(); i++) {
+                if (u[i] == 0) {
+                    r[d] = i;
+                    u[i] = 1; 
+                    if (check(r, d))
+                        plan(result, r, u, d+1);
+                    u[i] = 0;
+                }
+            }
+        }
+    }
+    bool check(vector<int>& r, int d) {
+        for (int i = 0; i < d; i++) {
+            if (abs(i - d) == abs(r[d] - r[i]))
+                return false;
+        }
+        return true;
+    }
+};

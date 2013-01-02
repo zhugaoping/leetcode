@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<vector<int> > results;
+        if (candidates.size() == 0)
+            return results;
+        sort(candidates.begin(), candidates.end());
+        vector<int> current;
+        getPlan(candidates.size() - 1, target, candidates, current, results);
+        return results;
+    }
+    void getPlan(int d, int c, vector<int>& can, vector<int>& cur, vector<vector<int> >& r) {
+        if (c == 0) {
+            r.push_back(cur);
+            return;
+        }
+        if (d < 0)
+            return;
+        int base = can[d];
+        int i = 0;
+        for (i; i*base <= c; i++) {
+            getPlan(d - 1, (c - i*base), can, cur, r);
+            cur.insert(cur.begin(), base);
+        }
+        while (i-- > 0) {
+            cur.erase(cur.begin());
+        }
+    }
+};

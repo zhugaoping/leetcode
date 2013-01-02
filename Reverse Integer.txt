@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int reverse(int x) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        bool pos = (x >= 0)?true:false;
+        string r = "";
+        while (x != 0) {
+            r += (char)('0' + abs((x%10) - 0));
+            x = x/10;
+        }
+        double d = 0;
+        for (int i = 0; i < r.size(); i++)
+            d = d*10 + (r[i] - '0');
+        if (!pos)
+            d *= -1;
+        if (pos && (d > (double)INT_MAX))
+            return INT_MAX;
+        if (!pos && (d > (double)INT_MIN * -1))
+            return INT_MIN;
+        else
+            return (int)d;
+    }
+};

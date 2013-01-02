@@ -1,0 +1,40 @@
+class Solution {
+public:
+    string intToRoman(int num) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        string result = "";
+        print(result, num/1000, '0', '0', 'M');
+        num -= (num/1000)*1000;
+        print(result, num/100, 'M', 'D', 'C');
+        num -= (num/100)*100;
+        print(result, num/10, 'C', 'L', 'X');
+        num -= (num/10)*10;
+        print(result, num, 'X', 'V', 'I');
+        return result;
+        
+    }
+    void print(string& result, int num, char ten, char five, char one) {
+        if (num == 9) {
+            result += one;
+            result += ten;
+        }
+        if ((num >= 5) && (num <= 8)) {
+            result += five;
+            while (num > 5) {
+                result += one;
+                num--;
+            }
+        }
+        if (num == 4) {
+            result += one;
+            result += five;
+        }
+        if ((num <= 3) && (num >= 1)) {
+            while (num > 0) {
+                result += one;
+                num--;
+            }
+        }
+    }
+};

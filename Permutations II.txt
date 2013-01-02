@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<vector<int> > permuteUnique(vector<int> &num) {
+         // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<vector<int> > rs;
+        if (num.size() == 0)
+            return rs;
+        int size = num.size();
+        sort(num.begin(), num.end());
+        vector<bool> use(size, 0);
+        vector<int> r;
+        plan(rs, r, num, use, 0);
+        return rs;
+    }
+    void plan(vector<vector<int> >& rs, vector<int>& r, vector<int>& num, vector<bool>& use, int d) {
+        if (d == num.size()) {
+            rs.push_back(r);
+            return;
+        }
+        int last = -1;
+        for (int i = 0; i < num.size(); i++) {
+            if (use[i])
+                continue;
+            else if ((last >= 0) && (num[last] == num[i]))
+                continue;
+            else {
+                last = i;
+                r.push_back(num[i]);
+                use[i] = true;
+                plan(rs, r, num, use, d+1);
+                use[i] = false;
+                r.pop_back();
+            }
+        }
+    }
+};

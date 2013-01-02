@@ -1,0 +1,58 @@
+class Solution {
+public:
+    bool isNumber(const char *s) {
+    	int len = (int)strlen(s);
+		int left = 0;
+		int right = len - 1;
+		while(' ' == s[left]) ++left;
+		while(' ' == s[right]) --right;
+		for(int i = 0; i < len; ++i)
+		{
+			if('e' == s[i])
+				return isNumber(s, left, i-1) && isInteger(s, i+1, right);
+		}
+		return isNumber(s, left, right);
+    }
+
+	bool isNumber(const char* s, int start, int end)
+	{
+		if(start <= end)
+		{
+			int cur = start;
+			bool hasDot = false;
+			bool hasDigit = false;
+			if('+' == s[cur] || '-' == s[cur])
+				++cur;
+			for(int i = cur; i <= end; ++i)
+			{
+				char ch = s[i];
+				if(ch >= '0' && ch <= '9')
+				{
+					hasDigit = true;
+					continue;
+				}
+				if('.' == ch && !hasDot)
+					hasDot = true;
+				else
+					return false;
+			}
+			return hasDigit;
+		}
+		return false;
+	}
+	bool isInteger(const char* s, int start, int end)
+	{
+		if(start <= end)
+		{
+			bool hasDigit = false;
+			if('+' == s[start] || '-' == s[start])
+				++start;
+			for(int i = start; i <= end; ++i)
+				if(s[i] >= '0' && s[i] <= '9')
+					hasDigit = true;
+				else
+					return false;
+			return hasDigit;
+		}
+	}
+};

@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int size = numbers.size();
+        vector<int> r(2, 0);
+        if (size < 2)
+            return r;
+        int s = 0;
+        int e = numbers.size() - 1;
+        vector<pair<int, int> > nums;
+        for (int i = 0; i < numbers.size(); i++)
+            nums.push_back(make_pair<int, int>(numbers[i], i));
+        sort(nums.begin(), nums.end());
+        while (s < e) {
+            int total = nums[s].first + nums[e].first;
+            if (total == target)
+                break;
+            else if (total < target)
+                s++;
+            else
+                e--;
+            
+        }
+        if (s >= e)
+            return r;
+        else {
+            r[0] = min(nums[s].second, nums[e].second)+1;
+            r[1] = max(nums[s].second, nums[e].second)+1;
+            return r;
+        }
+        
+    }
+};

@@ -1,0 +1,63 @@
+class Solution {
+public:
+    vector<int> searchRange(int A[], int n, int target) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<int> r;
+        if ((A[0] == target) && (A[n-1] == target)) {
+            r.push_back(0);
+            r.push_back(n-1);
+            return r;
+        }
+        if ((A[0] > target) || (A[n-1] < target)) {
+            r.push_back(-1);
+            r.push_back(-1);
+            return r;
+        }
+        double min = target - 0.5;
+        double max = target + 0.5;
+        int lb;
+        if (min < A[0])
+            lb = -1;
+        else if (min > A[n-1])
+            lb = n-1;
+        else {
+            int s = 0;
+            int e = n - 1;
+            while (s <= e) {
+                if (A[(s+e)/2] > min)
+                    e = (s+e)/2-1;
+                else
+                    s = (s+e)/2+1;
+            }
+            lb = e;
+        }
+        int rb;
+        if (max < A[0])
+            rb = -1;
+        else if (max > A[n-1])
+            rb = n - 1;
+        else {
+            int s = 0;
+            int e = n - 1;
+            while (s <= e) {
+                if (A[(s+e)/2] > max)
+                    e = (s+e)/2-1;
+                else
+                    s = (s+e)/2+1;
+            }
+            rb = e;
+        }
+        if (rb == lb) {
+            r.push_back(-1);
+            r.push_back(-1);
+            return r;
+        }
+        else {
+            r.push_back(lb+1);
+            r.push_back(rb);
+            return r;
+        }
+        
+    }
+};

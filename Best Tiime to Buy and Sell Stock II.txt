@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maxProfit(vector<int> &prices) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int size = prices.size();
+        if (size < 2)
+            return 0;
+        int prof = 0;
+        vector<int> b(1, prices[0]);
+        for (int i = 1; i < size; i++) {
+            if (prices[i] > b.back())
+                b.push_back(prices[i]);
+            else {
+                prof += b.back() - b[0];
+                while (b.size() > 0)
+                    b.pop_back();
+                b.push_back(prices[i]);
+            }
+        }
+        prof += b.back() - b[0];
+        return prof;
+    }
+};

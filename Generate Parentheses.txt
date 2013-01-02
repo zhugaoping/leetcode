@@ -1,0 +1,46 @@
+class A {
+            public:
+        int l;
+        int r;
+        string s;
+        A():l(0), r(0) {}
+        A(const A& a):l(a.l), r(a.r), s(a.s) {}
+};
+        
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<string> results;
+        vector<A>* previous = new vector<A>;
+        vector<A>* current = new vector<A>;
+        A a;
+        previous->push_back(a);
+        for (int i = 0; i < 2*n; i++) {
+            current->clear();
+            for (int j = 0; j < previous->size(); j++) {
+                A& a = (*previous)[j];
+                if (a.l < n) {
+                    A c(a);
+                    c.l++;
+                    c.s += "(";
+                    current->push_back(c);
+                }
+                if (a.r < a.l) {
+                    A c(a);
+                    c.r++;
+                    c.s += ")";
+                    current->push_back(c);
+                }
+            }
+            vector<A>* temp = previous;
+            previous = current;
+            current = temp;
+        }
+        for (int i = 0; i < previous->size(); i++)
+            results.push_back((*previous)[i].s);
+        return results;
+        
+    }
+};

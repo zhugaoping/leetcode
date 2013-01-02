@@ -1,0 +1,46 @@
+class Solution {
+public:
+    bool exist(vector<vector<char> > &board, string word) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        if (word.size() == 0)
+            return true;
+        int rsize = board.size();
+        if (rsize == 0)
+            return false;
+        int csize = board[0].size();
+        if (csize == 0)
+            return false;
+        bool** use = new bool*[rsize];
+        for (int i = 0; i < rsize; i++) {
+            use[i] = new bool[csize];
+            memset(use[i], 0x00, sizeof(bool)*csize);
+        }
+        for (int i = 0; i < rsize; i++) {
+            for (int j = 0; j < csize; j++) {
+                if (match(board, word, use, i, j, 0))
+                    return true;
+            }
+        }
+        return false;
+    }
+    bool match(vector<vector<char> >& b, string& w, bool** use, int i, int j, int d) {
+        if ((w[d] != b[i][j]) || (use[i][j]))
+            return false;
+        else {
+            if (d == w.size() - 1)
+                return true;
+            use[i][j] = true;
+            if ((i > 0) && match(b, w, use, i-1, j, d+1))
+                return true;
+            if ((j > 0) && match(b, w, use, i, j-1, d+1))
+                return true;
+            if ((j < b[0].size() - 1) && match(b, w, use, i, j+1, d+1))
+                return true;
+            if ((i < b.size() - 1) && match(b, w, use, i+1, j, d+1))
+                return true;
+            use[i][j] = false;
+            return false;
+        }
+    }
+};

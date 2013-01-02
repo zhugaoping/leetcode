@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int minPathSum(vector<vector<int> > &grid) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        if (grid.size() == 0)
+            return 0;
+        if (grid[0].size() == 0)
+            return 0;
+        vector<int> path(grid[0]);
+        int size = path.size();
+        for (int i = 1; i < size; i++) {
+            path[i] = path[i-1] + path[i];
+        }
+        int k = 1;
+        while (k < grid.size()) {
+            path[0] += grid[k][0];
+            for (int j = 1; j < size; j++) {
+                path[j] = ((path[j] < path[j-1])?path[j]:path[j-1]) + grid[k][j];
+            }
+            k++;
+        }
+        return path[size - 1];
+            
+        
+    }
+};

@@ -1,0 +1,50 @@
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int sizea = a.size();
+        int sizeb = b.size();
+        if (sizea == 0)
+            return b;
+        if (sizeb == 0)
+            return a;
+        int pa = sizea - 1;
+        int pb = sizeb - 1;
+        vector<int> bits;
+        int ca = 0;
+        while ((pa >= 0) && (pb >= 0)) {
+            int ab = a[pa] - '0';
+            int bb = b[pb] - '0';
+            int sum = ab + bb + ca;
+            bits.push_back(sum%2);
+            ca = sum/2;
+            pa--;
+            pb--;
+        }
+        if (pb == -1) {
+            while (pa >= 0) {
+                int ab = a[pa] - '0';
+                int sum = ab + ca;
+                bits.push_back(sum%2);
+                ca = sum/2;
+                pa--;
+            }
+        }
+        if (pa == -1) {
+            while (pb >= 0) {
+                int bb = b[pb] - '0';
+                int sum = bb + ca;
+                bits.push_back(sum%2);
+                ca = sum/2;
+                pb--;
+            }
+        }
+        if (ca > 0)
+            bits.push_back(1);
+        string r = "";
+        for (int i =  bits.size() - 1; i >= 0; i--)
+            r += '0' + (char)(bits[i]);
+        return r;
+    }
+};

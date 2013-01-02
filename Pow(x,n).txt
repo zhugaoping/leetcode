@@ -1,0 +1,23 @@
+class Solution {
+public:
+    double pow(double x, int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        if (n == 0)
+            return 1;
+        bool inverse = false;
+        if (n < 0) {
+            inverse  = true;
+            n *= -1;
+        }
+        double result = 1;
+        double xpower = x;
+        while (n > 0) {
+            if (n & 1)
+                result *= xpower;
+            xpower *= xpower;
+            n = n >> 1;
+        }
+        return (inverse)?(1/result):result;
+    }
+};

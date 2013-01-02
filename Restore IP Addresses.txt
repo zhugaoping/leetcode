@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<string> rs;
+        if ((s.size() < 4) || (s.size() > 12))
+            return rs;
+        plan(rs, s, "", 0, 0);
+        return rs;
+        
+    }
+    void plan(vector<string>& rs, string& s, string r, int b, int d) {
+        if ((d == 4) && (b == s.size()))
+            rs.push_back(r.substr(0, r.size() - 1));
+        for (int i = 1; i <= 3; i++)
+            if (((b + i) <= s.size()) && valid(s, b, i))
+                plan(rs, s, r + s.substr(b, i) + ".", b + i, d + 1);
+    }
+    bool valid(string& s, int b, int i) {
+        if (i == 2)
+            return (s[b] != '0')?true:false;
+        else if (i == 3) {
+            if (s[b] == '0')
+                return false;
+            int num = 0;
+            for (int j = 0; j < i; j++) 
+                num = num*10 + (s[b+j] -'0');
+            return (num <= 255)? true:false;
+        }
+        else
+            return true;
+    }
+};
