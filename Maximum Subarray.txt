@@ -3,20 +3,14 @@ public:
     int maxSubArray(int A[], int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (n == 0)
-            return 0;
-        int max = INT_MIN;
-        int tmp = 0;
+        if (n == 1)
+            return A[0];
+        int mav = INT_MIN, tmp = 0;
         for (int i = 0; i < n; i++) {
-            tmp += A[i];
-            if (tmp < 0) {
-                max = (tmp > max)?tmp:max;
-                tmp = 0;
-            }
-            else
-                max = (tmp > max)?tmp:max;
+            tmp = tmp + A[i];
+            mav = max(tmp, mav);
+            tmp = max(tmp, 0);
         }
-        return max;
-        
+        return mav;
     }
 };

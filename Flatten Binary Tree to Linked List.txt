@@ -21,9 +21,7 @@ public:
             return;
         _flatten(root->right);
         _flatten(root->left);
-        if (next != NULL)
-            root->right = next;
-        root->left=next;
+        root->right=next;
         next = root;
         next->left = NULL;
     }

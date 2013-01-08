@@ -13,35 +13,31 @@ public:
     void recoverTree(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        last = NULL;
-        t1 = NULL;
-        t2 = NULL;
-        find1(root);
-        find2(root);
-        int t = t1->val;
+        last = NULL, t1 = NULL;
+        findFirst(root);
+        last = NULL, t2 = NULL;
+        findSecond(root);
+        int temp = t1->val;
         t1->val = t2->val;
-        t2->val = t;
+        t2->val = temp;
+        
     }
-    void find1(TreeNode* root) {
+    void findFirst(TreeNode* root) {
         if (root == NULL)
             return;
-        find1(root->left);
-        if (last != NULL) {
-            if ((t1 == NULL) && (last->val > root->val))
-                t1 = last;
-        }
+        findFirst(root->left);
+        if (last != NULL)
+            t1 = (root->val < last->val)?root:t1;
         last = root;
-        find1(root->right);
+        findFirst(root->right);
     }
-    void find2(TreeNode* root) {
+    void findSecond(TreeNode* root) {
         if (root == NULL)
             return;
-        find2(root->right);
-        if (last != NULL) {
-            if ((t2 == NULL) && (last->val < root->val))
-                t2 = last;
-        }
+        findSecond(root->right);
+        if (last != NULL)
+            t2 = (root->val > last->val)?root:t2;
         last = root;
-        find2(root->left);
+        findSecond(root->left);
     }
 };

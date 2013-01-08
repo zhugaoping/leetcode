@@ -1,0 +1,32 @@
+class Solution {
+public:
+    char *strStr(char *haystack, char *needle) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        if (!needle || (*needle == 0))
+            return haystack;
+        if (!haystack || (*haystack == 0))
+            return NULL;
+        char *s = haystack;
+        char *e = haystack;
+        char *t = needle;
+        while (*++t)
+            e++;
+        while (*e) {
+            char* m = s;
+            char* n = needle;
+            while ((*m != 0) && (*n != 0) && (*m == *n)) {
+                m++;
+                n++;
+            }
+            if (*n == 0)
+                return s;
+            else {
+                s++;
+                e++;
+            }
+        }
+        return NULL;
+        
+    }
+};

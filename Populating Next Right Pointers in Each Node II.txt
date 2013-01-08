@@ -13,14 +13,8 @@ public:
         // DO NOT write int main() function
         if (root == NULL)
             return;
-        else
-            linklr(root);
-    }
-    void linklr(TreeLinkNode* root) {
-        if (root == NULL)
-            return;
-        linklr(root->left);
-        linklr(root->right);
+        connect(root->left);
+        connect(root->right);
         TreeLinkNode* l = root->left;
         TreeLinkNode* r = root->right;
         while (l != NULL) {
