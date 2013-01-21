@@ -13,7 +13,6 @@ public:
             for (int j = 1; j <= i; j++) {
                 results.back().push_back(results.back().back() * (i - j + 1) /j);
             }
-            
         }
         return results;
         

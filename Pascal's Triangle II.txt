@@ -3,22 +3,11 @@ public:
     vector<int> getRow(int rowIndex) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<int> results;
-        if (rowIndex == 0) {
-            results.push_back(1);
-                return results;
-        }
-        if (rowIndex == 1) {
-            results.push_back(1);
-            results.push_back(1);
-            return results;
-        }
-        else {
-            results.push_back(1);
-            for (int j = 1; j <= rowIndex; j++)
-                results.push_back((results.back()*(double)(rowIndex - j + 1))/(double)j);
-        }
-        return results;
+        vector<int> ret(rowIndex+1, 0);
+        ret[0] = 1;
+        for (int j = 1; j <= rowIndex; j++)
+            ret[j] = ((double) ret[j-1] * (rowIndex-j+1))/j;
+        return ret;
         
     }
 };
