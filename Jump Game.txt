@@ -3,10 +3,11 @@ public:
     bool canJump(int A[], int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int mav = A[0];
-        for (int i = 0; ((i < n) && (i <= mav)); i++)
-            mav = max(mav, i + A[i]);
-        return (mav >= (n-1))?true:false;
-        
+        if (n == 0)
+            return true;
+        int last = A[0];
+        for (int i = 1; i <= min(last, n-1); i++)
+            last = max(last, i + A[i]);
+        return (last >= n - 1);
     }
 };

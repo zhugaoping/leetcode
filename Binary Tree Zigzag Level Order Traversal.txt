@@ -12,34 +12,31 @@ public:
     vector<vector<int> > zigzagLevelOrder(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > rs;
+        vector<vector<int> > rets;
         if (root == NULL)
-            return rs;
-        vector<TreeNode*> inner;
-        vector<TreeNode*> outer;
+            return rets;
+        vector<TreeNode*> inner, outer;
+        bool left = true;
         inner.push_back(root);
-        bool pos = true;
-        while (inner.size() > 0) {
+        while (!inner.empty()) {
             outer.clear();
-            vector<int> level;
+            vector<int> ret;
+            rets.push_back(ret);
             while (inner.size() > 0) {
-                if (pos)
-                    level.push_back(inner.front()->val);
-                else
-                    level.insert(level.begin(), inner.front()->val);
-                if (inner.front()->left) {
-                        outer.push_back(inner.front()->left);
-                }
-                if (inner.front()->right) {
-                        outer.push_back(inner.front()->right);
-                }
+                TreeNode* cur = *inner.begin();
                 inner.erase(inner.begin());
+                if (left)
+                    rets.back().push_back(cur->val);
+                else
+                    rets.back().insert(rets.back().begin(), cur->val);
+                if (cur->left)
+                    outer.push_back(cur->left);
+                if (cur->right)
+                    outer.push_back(cur->right);
             }
-            rs.push_back(level);
             inner = outer;
-            pos = !pos;
+            left = !left;
         }
-        return rs;
-        
+        return rets;
     }
 };

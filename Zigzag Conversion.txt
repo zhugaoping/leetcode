@@ -1,0 +1,19 @@
+class Solution {
+public:
+    string convert(string s, int nRows) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        if (nRows == 1)
+            return s;
+        string rows[nRows];
+        int zigsize = nRows*2 - 2, p = 0;
+        while (p < s.size()) {
+            rows[nRows - 1 - abs((p%zigsize) - nRows + 1)] += s[p];
+            p++;
+        }
+        string ret;
+        for (int i = 0; i < nRows; i++)
+            ret = ret + rows[i];
+        return ret;
+    }
+};

@@ -12,21 +12,15 @@ public:
     TreeNode *sortedArrayToBST(vector<int> &num) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (num.size() == 0)
-            return NULL;
-        else
-            return createNode(num, 0, num.size()-1);
-        
+        return build(num, 0, num.size() -1);
     }
-    TreeNode* createNode(vector<int>& num, int s, int r) {
-        if (s > r)
+    TreeNode* build(vector<int>& num, int l, int u) {
+        if (l > u)
             return NULL;
-        else {
-            int p = (s+r)/2;
-            TreeNode* node = new TreeNode(num[p]);
-            node->left = createNode(num, s, p-1);
-            node->right = createNode(num, p+1, r);
-            return node;
-        }
+        int mid = (l+u)/2;
+        TreeNode* root = new TreeNode(num[mid]);
+        root->left = build(num, l, mid-1);
+        root->right = build(num, mid+1, u);
+        return root;
     }
 };

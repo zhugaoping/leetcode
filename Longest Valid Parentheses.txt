@@ -6,26 +6,26 @@ public:
         int size = s.size();
         if (size == 0)
             return 0;
-        int max = 0;
-        int start = size;
-        vector<int> b;
+        vector<pair<char, int> > b;
+        vector<bool> use(size, false);
         for (int i = 0; i < size; i++) {
-            char c = s[i];
-            if (c == '(')
-                b.push_back(i);
-            else {
-                if (b.size() > 0) {
-                    start = (start < b.back())?start:b.back();
-                    b.pop_back();
-                    if (b.size() > 0)
-                        max = ((i - b.back())>max)?(i - b.back()):max;
-                    else
-                        max = ((i + 1 - start)>max)?(i + 1 - start):max;
-                }
-                else
-                    start = size;
+            if ((s[i] == ')') && !b.empty() && (b.back().first == '(')) {
+                use[i] = true;
+                use[b.back().second] = true;
+                b.pop_back();
             }
+            else
+                b.push_back(pair<char, int>(s[i], i));
         }
-        return max;
+        int p = 0, l = 0, mav = 0;
+        while (p < size) {
+            while ((p < size) && (use[p] == false))
+                p++;
+            l = p;
+            while ((p < size) && (use[p] == true))
+                p++;
+            mav = max(mav, p - l); 
+        }
+        return mav;
     }
 };

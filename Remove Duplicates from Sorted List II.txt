@@ -13,29 +13,26 @@ public:
         // DO NOT write int main() function
         if (head == NULL)
             return head;
-        ListNode* h = new ListNode(0);
-        ListNode* t = h, *p;
+        ListNode* root = new ListNode(0);
+        ListNode* tail = root;
         while (head != NULL) {
-            p = head;
-            while ((p != NULL) && (p->val == head->val))
-                p = p->next;
-            if (p == head->next) {
-                t->next = head;
-                t = head;
-                head = p;
+            ListNode* temp = head->next;
+            while ((temp != NULL) && (temp->val == head->val))
+                temp = temp->next;
+            if (temp == head->next) {
+                tail->next = head;
+                tail = tail->next;
+                tail->next = NULL;
+                head = temp;
             }
-            else {
-                while (head != p) {
-                    ListNode* r = head;
-                    head = head->next;
-                    delete r;
-                }   
+            while (head != temp) {
+                ListNode* t = head;
+                head = head->next;
+                delete t;
             }
         }
-        t->next = NULL;
-        head = h->next;
-        delete h;
-        return head;
-        
+        head = root->next;
+        delete root;
+        return head;    
     }
 };

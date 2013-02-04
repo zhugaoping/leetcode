@@ -1,39 +1,25 @@
 class Solution {
 public:
-    bool isValid(string s) {
+    bool isPalindrome(string s) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int size = s.size();
-        if (size == 0)
+        if (s == "")
             return true;
-        vector<char> b;
-        int p = 0;
-        while (p < size) {
-            if ((s[p] == '(') || (s[p] == '[') || (s[p] == '{'))
-                b.push_back(s[p]);
-            if (s[p] == ')') {
-                if ((b.size() > 0) && (b.back() == '('))
-                    b.pop_back();
-                else
-                    return false;
-            }
-            if (s[p] == ']') {
-                if ((b.size() > 0) && (b.back() == '['))
-                    b.pop_back();
-                else
-                    return false;
-            }
-            if (s[p] == '}') {
-                if ((b.size() > 0) && (b.back() == '{'))
-                    b.pop_back();
-                else
-                    return false;
-            }
-            p++;
+        int l = 0, u = s.size() - 1;
+        while ((l < u) && !(isalpha(s[l]) || isdigit(s[l])))
+            l++;
+        while ((l < u) && !(isalpha(s[u]) || isdigit(s[u])))
+            u--;
+        while (l < u) {
+            if (tolower(s[l]) != tolower(s[u]))
+                return false;
+            l++;
+            u--;
+            while ((l < u) && !(isalpha(s[l]) || isdigit(s[l])))
+                l++;
+            while ((l < u) && !(isalpha(s[u]) || isdigit(s[u])))
+                u--;
         }
-        if (b.size() == 0)
-            return true;
-        else
-            return false;
+        return true;
     }
 };

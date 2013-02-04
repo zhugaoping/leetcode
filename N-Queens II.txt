@@ -3,34 +3,37 @@ public:
     int totalNQueens(int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int result = 0;
-        if (n == 0)
-            return result;
-        vector<int> r(n, 0);
-        vector<int> u(n, 0);
-        plan(result, r, u, 0);
-        return result;
+        int count = 0;
+        vector<int> pos;
+        for (int i = 0; i < n; i++)
+            pos.push_back(i);
+        plan(count, pos, 0);
+        return count;
     }
-    void plan(int& result, vector<int>& r, vector<int>& u, int d) {
-        if (d == r.size())
-            result++;
+    void plan(int &count, vector<int>& pos, int p) {
+        if (p == pos.size())
+            count++;
         else {
-            for (int i = 0; i < r.size(); i++) {
-                if (u[i] == 0) {
-                    r[d] = i;
-                    u[i] = 1; 
-                    if (check(r, d))
-                        plan(result, r, u, d+1);
-                    u[i] = 0;
-                }
+            if (check(pos, p))
+                plan(count, pos, p+1);
+            for (int i = p + 1; i < pos.size(); i++) {
+                swap(pos[p], pos[i]);
+                if (check(pos, p))
+                    plan(count, pos, p+1);
+                swap(pos[p], pos[i]);
             }
         }
     }
-    bool check(vector<int>& r, int d) {
-        for (int i = 0; i < d; i++) {
-            if (abs(i - d) == abs(r[d] - r[i]))
-                return false;
+    bool check(vector<int> &pos, int p) {
+        for (int i = 0; i < p; i++) {
+            if (abs(i-p) == abs(pos[i] - pos[p]))
+                    return false;
         }
         return true;
+    }
+    void swap(int& a, int& b) {
+        int t = a;
+        a = b;
+        b = t;
     }
 };

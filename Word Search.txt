@@ -3,44 +3,45 @@ public:
     bool exist(vector<vector<char> > &board, string word) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (word.size() == 0)
+        int nrows = board.size();
+        if (nrows == 0)
+            return false;
+        int ncols = board[0].size();
+        if (ncols == 0)
+            return false;
+        if (word == "")
             return true;
-        int rsize = board.size();
-        if (rsize == 0)
-            return false;
-        int csize = board[0].size();
-        if (csize == 0)
-            return false;
-        bool** use = new bool*[rsize];
-        for (int i = 0; i < rsize; i++) {
-            use[i] = new bool[csize];
-            memset(use[i], 0x00, sizeof(bool)*csize);
+        vector<vector<bool> > state;
+        for (int i = 0; i < nrows; i++) {
+            vector<bool> temp(ncols, 0);
+            state.push_back(temp);
         }
-        for (int i = 0; i < rsize; i++) {
-            for (int j = 0; j < csize; j++) {
-                if (match(board, word, use, i, j, 0))
+        for (int i = 0; i < nrows; i++) {
+            for (int j = 0; j < ncols; j++)
+                if (traverse(state, word, 0, i, j, board))
                     return true;
-            }
         }
         return false;
     }
-    bool match(vector<vector<char> >& b, string& w, bool** use, int i, int j, int d) {
-        if ((w[d] != b[i][j]) || (use[i][j]))
+    bool traverse(vector<vector<bool> >& s, string& w, int p, int r, int c, vector<vector<char> > &b) {
+        if ((w[p] != b[r][c]) || s[r][c])
             return false;
         else {
-            if (d == w.size() - 1)
+            if (p == w.size() - 1)
                 return true;
-            use[i][j] = true;
-            if ((i > 0) && match(b, w, use, i-1, j, d+1))
-                return true;
-            if ((j > 0) && match(b, w, use, i, j-1, d+1))
-                return true;
-            if ((j < b[0].size() - 1) && match(b, w, use, i, j+1, d+1))
-                return true;
-            if ((i < b.size() - 1) && match(b, w, use, i+1, j, d+1))
-                return true;
-            use[i][j] = false;
-            return false;
+            else {
+                s[r][c] = true;
+                if ((r > 0) && traverse(s, w, p+1, r-1, c, b))
+                    return true;
+                if ((c > 0) && traverse(s, w, p+1, r, c-1, b))
+                    return true;
+                if ((r < s.size() - 1) && traverse(s, w, p+1, r+1, c, b))
+                    return true;
+                if ((c < s[0].size() - 1) && traverse(s, w, p+1, r, c+1, b))
+                    return true;
+                s[r][c] = false;
+            }
         }
+        return false;
     }
 };

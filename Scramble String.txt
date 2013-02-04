@@ -4,44 +4,38 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         if (s1.size() != s2.size())
-             return false;
-        bool f[s1.size()][s1.size()][s1.size()];
-         for(int i = 0; i < s1.size(); i++)
-             for(int j = 0; j < s2.size(); j++)
-                 f[1][i][j] = (s1[i] == s2[j]);
-                 
-         for(int len = 2; len <= s1.size(); len++)
-         {
-             for(int s1Beg = 0; s1Beg < s1.size(); s1Beg++)
-             {
-                 int s1End = s1Beg + len - 1;
-                 if (s1End >= s1.size())
-                     break;
-                 
-                 for(int s2Beg = 0; s2Beg < s2.size(); s2Beg++)
-                 {
-                     int s2End = s2Beg + len - 1;
-                     if (s2End >= s2.size())
-                         break;
-                     
-                     f[len][s1Beg][s2Beg] = false;    
-                     for(int s1Mid = s1Beg; s1Mid < s1End; s1Mid++)
-                     {
-                         int leftSize = s1Mid - s1Beg + 1;
-                         int rightSize = len - leftSize;
-                         int s2Mid = s2Beg + leftSize - 1;
-                         bool res1 = f[leftSize][s1Beg][s2Beg] && f[rightSize][s1Mid+1][s2Mid+1];
-                         
-                         s2Mid = s2End - leftSize;
-                         bool res2 = f[leftSize][s1Beg][s2Mid+1] && f[rightSize][s1Mid+1][s2Beg];
-                         
-                         f[len][s1Beg][s2Beg] = f[len][s1Beg][s2Beg] || res1 || res2;
-                     }
-                 }
-             }
-         }
-         
-         return f[s1.size()][0][0];
-        
+            return false;
+        int size = s1.size();
+        bool matrix[size][size][size];
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
+                matrix[0][i][j] = (s1[i] == s2[j]);
+        for (int n = 1; n < size; n++) {
+            int len = n + 1;
+            for (int i = 0; i <= size - len; i++)
+                for (int j = 0; j <= size - len; j++) {
+                    matrix[n][i][j] = false;
+                    for (int k = 1; k < len; k++) {
+                        if (matrix[k-1][i][j] && matrix[len-k-1][i+k][j+k]) {
+                            matrix[n][i][j] = true;
+                            break;
+                        }
+                        if (matrix[len-k-1][i][j] && matrix[k-1][i+len-k][j+len-k]) {
+                            matrix[n][i][j] = true;
+                            break;
+                        }
+                        if (matrix[k-1][i][j+len-k] && matrix[len-k-1][i+k][j]) {
+                            matrix[n][i][j] = true;
+                            break;
+                        }
+                        if (matrix[k-1][i+len-k][j] && matrix[len-k-1][i][j+k]) {
+                            matrix[n][i][j] = true;
+                            break;
+                        } 
+                    }
+                }
+        }
+        return matrix[size-1][0][0];
     }
+    
 };

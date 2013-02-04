@@ -3,24 +3,20 @@ public:
     string getPermutation(int n, int k) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (n == 0)
-            return "";
-        int plan[n+1];
-        plan[0] = 1;
-        for (int i = 1; i <= n; i++)
-            plan[i] = plan[i-1]*i;
+        int fac[n], d;
+        for (int i = 0; i < n; i++)
+            fac[i] = (!i)?1:fac[i-1]*i;
+        string ret = "";
         vector<int> nums;
-        for (int i = 1; i <= n; i++)
-            nums.push_back(i);
-        string r = "";
+        for (int i = 0; i < n; i++)
+            nums.push_back(i+1);
         k--;
         for (int i = n-1; i >= 0; i--) {
-            int pos = k/plan[i];
-            int num = nums[pos];
-            r += (char)('0' + num);
-            nums.erase(nums.begin()+pos);
-            k = k - pos*plan[i];
+            d = k/fac[i];
+            ret += (nums[d] + '0');
+            nums.erase(nums.begin() + d);
+            k = k%fac[i];
         }
-        return r;
+        return ret;
     }
 };

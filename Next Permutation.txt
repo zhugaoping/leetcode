@@ -4,36 +4,28 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         int size = num.size();
-        if (size <= 1)
+        if ((size == 0) || (size == 1))
             return;
-        int i = size - 2;
-        multiset<int> b;
-        b.insert(num[size-1]);
+        int mav = num.back(), i = size - 2;
         for (; i >= 0; i--) {
-            if (num[i] < *(b.rbegin()))
+            if (num[i] < mav)
                 break;
-            else
-                b.insert(num[i]);
+            mav = max(mav, num[i]);
         }
-        if (i == -1)
+        if (i < 0)
             sort(num.begin(), num.end());
         else {
-            int t = num[i];
-            set<int>::iterator p = b.begin();
-            while (p != b.end()) {
-                if (t < *p) {
-                    num[i] = *p;
-                    b.erase(p);
-                    break;
+            int pos = 0, dif = INT_MAX;
+            for (int j = i + 1; j < size; j++) {
+                if ((num[i] < num[j]) && ((num[j] - num[i]) < dif)) {
+                    pos = j;
+                    dif = num[j] - num[i];
                 }
-                p++;
             }
-            b.insert(t);
-            p = b.begin();
-            for (int j = i+1; j < size; j++) {
-                num[j] = *p;
-                p++;
-            }
+            int t = num[i];
+            num[i] = num[pos];
+            num[pos] = t;
+            sort(num.begin()+i+1, num.end());
         }
     }
 };

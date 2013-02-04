@@ -3,37 +3,31 @@ public:
     int uniquePathsWithObstacles(vector<vector<int> > &obstacleGrid) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> >& g = obstacleGrid;
-         if (( g.size() == 0) || (g[0].size() == 0))
+        int nrows = obstacleGrid.size();
+        int ncols = obstacleGrid[0].size();
+        if (!nrows || !ncols)
             return 0;
-        int m = g.size();
-        int n = g[0].size();
-        int mat[m][n];
+        int mat[nrows][ncols];
         int i = 0;
-        for (; i < m; i++) {
-            if (g[i][0])
-                break;
-            mat[i][0] = 1;
-        }
-        for (; i < m; i++)
-            mat[i][0] = 0;
-        i = 0;
-        for (; i < n; i++) {
-            if (g[0][i])
+        for (; i < ncols; i++) {
+            if (obstacleGrid[0][i])
                 break;
             mat[0][i] = 1;
         }
-        for (; i < n; i++)
+        for (; i < ncols; i++)
             mat[0][i] = 0;
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                if (g[i][j])
-                    mat[i][j] = 0;
-                else
-                    mat[i][j] = mat[i-1][j] + mat[i][j-1];
-            }
+        i = 0;
+        for (; i < nrows; i++) {
+            if (obstacleGrid[i][0])
+                break;
+            mat[i][0] = 1;
         }
-        return mat[m-1][n-1];
-        
+        for (; i < nrows; i++)
+            mat[i][0] = 0;
+        for (int i = 1; i < nrows; i++) {
+            for (int j = 1; j < ncols; j++)
+                mat[i][j] = (obstacleGrid[i][j])?0:mat[i-1][j] + mat[i][j-1];
+        }
+        return mat[nrows-1][ncols-1];
     }
 };

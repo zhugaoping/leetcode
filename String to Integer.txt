@@ -3,34 +3,27 @@ public:
     int atoi(const char *str) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (!str)
+        if (!str || (*str == 0))
             return 0;
-        while ((*str != 0) && (*str == ' '))
+        double temp = 0;
+        bool neg = false;
+        while (*str == ' ')
             str++;
-        if (*str == 0)
-            return 0;
-        bool pos = true;
         if (*str == '-') {
-            pos = false;
+            neg = true;
             str++;
         }
-        else if (*str == '+') {
+        else if (*str == '+')
+            str++;
+        while (isdigit(*str)){
+            temp = temp*10 + (*str - '0');
             str++;
         }
-        double d = 0;
-        while ((*str != 0) && (*str >= '0') && (*str <= '9')) {
-            d = d*10 + (*str - '0');
-            str++;
+        if (neg) {
+            temp = -temp;
+            return (temp < INT_MIN)?INT_MIN:temp;
         }
-        if (pos) {
-            if (d > (double)INT_MAX)
-                return INT_MAX;
-        }
-        else {
-            d = d* -1;
-            if (d < (double)INT_MIN)
-                return INT_MIN;
-        }
-        return (int)d;
+        else
+            return (temp > INT_MAX)?INT_MAX:temp;
     }
 };

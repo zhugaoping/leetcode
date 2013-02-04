@@ -3,40 +3,42 @@ public:
     vector<vector<string> > solveNQueens(int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<string> > results;
-        if (n == 0)
-            return results;
-        vector<int> r(n, 0);
-        vector<int> u(n, 0);
-        plan(results, r, u, 0);
+        vector<vector<string> > rets;
+        string empty(n, '.');
+        vector<string> ret(n, empty);
+        vector<int> pos;
+        for (int i = 0; i < n; i++)
+            pos.push_back(i);
+        plan(rets, ret, pos, 0);
+        return rets;
     }
-    void plan(vector<vector<string> >& results, vector<int>& r, vector<int>& u, int d) {
-        if (d == r.size()) {
-            vector<string> p;
-            results.push_back(p);
-            for (int i = 0; i < r.size(); i++) {
-                string s(r.size(), '.');
-                s[r[i]] = 'Q';
-                results.back().push_back(s);
-            }
+    void plan(vector<vector<string> > &rets, vector<string> & ret, vector<int>& pos, int p) {
+        if (p == pos.size()) {
+            rets.push_back(ret);
+            for (int i = 0; i < pos.size(); i++)
+                rets.back()[i][pos[i]] = 'Q';
         }
         else {
-            for (int i = 0; i < r.size(); i++) {
-                if (u[i] == 0) {
-                    r[d] = i;
-                    u[i] = 1; 
-                    if (check(r, d))
-                        plan(results, r, u, d+1);
-                    u[i] = 0;
-                }
+            if (check(pos, p))
+                plan(rets, ret, pos, p+1);
+            for (int i = p + 1; i < pos.size(); i++) {
+                swap(pos[p], pos[i]);
+                if (check(pos, p))
+                    plan(rets, ret, pos, p+1);
+                swap(pos[p], pos[i]);
             }
         }
     }
-    bool check(vector<int>& r, int d) {
-        for (int i = 0; i < d; i++) {
-            if (abs(i - d) == abs(r[d] - r[i]))
-                return false;
+    bool check(vector<int> &pos, int p) {
+        for (int i = 0; i < p; i++) {
+            if (abs(i-p) == abs(pos[i] - pos[p]))
+                    return false;
         }
         return true;
+    }
+    void swap(int& a, int& b) {
+        int t = a;
+        a = b;
+        b = t;
     }
 };

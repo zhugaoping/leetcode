@@ -5,13 +5,10 @@ public:
         // DO NOT write int main() function
         if (n == 0)
             return 0;
-        int store = 1;
-        for (int i = 1; i < n; i++) {
-            if (A[i] == A[store-1])
-                continue;
-            else
-                A[store++] = A[i];
-        }
-        return store;
+        int e = 0;
+        for (int i = 1; i < n; i++)
+            if (A[i] != A[e])
+                A[++e] = A[i];
+        return e+1;
     }
 };

@@ -19,7 +19,6 @@ public:
             return results;
         }
         int p = 0;
-        bool merge = false;
         while (p < intervals.size()) {
             Interval& c = intervals[p];
             if (n.start > c.end)

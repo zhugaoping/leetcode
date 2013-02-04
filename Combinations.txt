@@ -3,31 +3,22 @@ public:
     vector<vector<int> > combine(int n, int k) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<int> current;
-        vector<vector<int> > results;
-        if ((k == 0) || (k > n))
-            return results;
-        
-        vector<int> numbers;
-        for (int i = 1; i <= n; i++)
-            numbers.push_back(i);
-        getPlan(numbers, 0, k, current, results);
-        return results;
-        
+        vector<vector<int> > rets;
+        vector<int> ret;
+        plan(rets, ret, 1, n, k);
+        return rets;
     }
-    void getPlan(vector<int>& n, int d, int k, vector<int>& c, vector<vector<int> >& r) {
+    void plan(vector<vector<int> >& rs, vector<int> r, int p, int n, int k) {
         if (k == 0) {
-            r.push_back(c);
+            rs.push_back(r);
             return;
         }
-        if (d == n.size())
-            return;
-        if (k <= (n.size() - d)) {
-            getPlan(n, d + 1, k, c, r);
-            c.push_back(n[d]);
-            getPlan(n, d + 1, k - 1, c, r);
-            c.pop_back();
+        if (p + 1 + k <= n + 1)
+            plan(rs, r, p+1, n, k);
+        if (p + k <= n + 1) {
+            r.push_back(p);
+            plan(rs, r, p+1, n, k-1);
+            r.pop_back();
         }
-
     }
 };

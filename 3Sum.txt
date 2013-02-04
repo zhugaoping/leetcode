@@ -3,43 +3,36 @@ public:
     vector<vector<int> > threeSum(vector<int> &num) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > rs;
+        vector<vector<int> > rets;
         int size = num.size();
-        if (num.size() < 3)
-            return rs;
+        if (size < 3)
+            return rets;
         sort(num.begin(), num.end());
         for (int i = 0; i < size - 2; i++) {
-            if ((i > 0) && (num[i] == num[i-1]))
-                continue;
-            int s = i + 1;
-            int e = size - 1;
-            while (s < e) {
-                int add = num[i] + num[s] + num[e];
-                if (add > 0) {
-                    e--;
-                    while ((s > e) && (num[e] == num[e+1]))
-                        e--;
-                }
-                else if (add < 0) {
-                    s++;
-                    while ((s < e) && (num[s] == num[s-1]))
-                        s++;
+            while ((i > 0) && (i < (size - 2)) && (num[i] == num[i-1]))
+                i++;
+            int l = i + 1, u = size - 1, sum = 0;
+            while (l < u) {
+                sum = num[i] + num[l] + num[u];
+                if (sum > 0) {
+                    u--;
+                    while ((l < u) && (num[u] == num[u+1]))
+                        u--;
                 }
                 else {
-                    vector<int> r;
-                    r.push_back(num[i]);
-                    r.push_back(num[s]);
-                    r.push_back(num[e]);
-                    rs.push_back(r);
-                    s++;
-                    while ((s < e) && (num[s] == num[s-1]))
-                        s++;
-                    e--;
-                    while ((s > e) && (num[e] == num[e+1]))
-                        e--;
+                    if (sum == 0) {
+                        vector<int> ret;
+                        rets.push_back(ret);
+                        rets.back().push_back(num[i]);
+                        rets.back().push_back(num[l]);
+                        rets.back().push_back(num[u]);
+                    }
+                    l++;
+                    while ((l < u) && (num[l] == num[l-1]))
+                        l++;
                 }
             }
         }
-        return rs;
+        return rets;
     }
 };

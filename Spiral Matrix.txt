@@ -3,37 +3,32 @@ public:
     vector<int> spiralOrder(vector<vector<int> > &matrix) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<int> rs;
-        int size1 = matrix.size();
-        if (size1 == 0)
-            return rs;
-        int size2 = matrix[0].size();
-        if (size2 == 0)
-            return rs;
-        int min = (size1 < size2)?size1/2:size2/2;
-        for (int i = 0; i < min; i++) {
-            for (int j = i; j < size2 -1 - i; j++)
-                rs.push_back(matrix[i][j]);
-            for (int j = i; j < size1 -1 - i; j++)
-                rs.push_back(matrix[j][size2 - 1 - i]);
-            for (int j = size2 -1 - i; j > i; j--)
-                rs.push_back(matrix[size1 -1 - i][j]);
-            for (int j = size1 -1 - i; j > i; j--)
-                rs.push_back(matrix[j][i]);
+        vector<int> rets;
+        int row = matrix.size();
+        if (row == 0)
+            return rets;
+        int col = matrix[0].size();
+        if (col == 0)
+            return rets;
+        int round = (row < col)?row/2:col/2;
+        for (int i = 0; i < round; i++) {
+            for (int j = i; j < col - 1 - i; j++)
+                rets.push_back(matrix[i][j]);
+            for (int j = i; j < row - 1 - i; j++)
+                rets.push_back(matrix[j][col - 1 - i]);
+            for (int j = col - 1 - i; j > i; j--)
+                rets.push_back(matrix[row - 1 - i][j]);
+            for (int j = row - 1 - i; j > i; j--)
+                rets.push_back(matrix[j][i]);
         }
-        if ((size1 == size2) && (size1%2 != 0)) {
-            rs.push_back(matrix[min][min]);
+        if ((row < col) && (row%2)) {
+            for (int j = round; j <= col - 1 - round; j++)
+                rets.push_back(matrix[round][j]);
         }
-        else if ((size1 < size2) && (size1%2 !=0)) {
-            for (int i = min; i <= size2-1-min; i++)
-                rs.push_back(matrix[min][i]);
+        else if ((row >= col) && (col%2)) {
+            for (int j = round; j <= row - 1 - round; j++)
+                rets.push_back(matrix[j][round]);
         }
-        else if ((size1 > size2) && (size2%2 !=0)) {
-            for (int i = min; i <= size1-1-min; i++)
-                rs.push_back(matrix[i][min]);
-        }
-        
-        return rs;
-        
+        return rets; 
     }
 };

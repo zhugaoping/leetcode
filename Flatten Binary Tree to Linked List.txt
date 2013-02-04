@@ -9,20 +9,19 @@
  */
 class Solution {
 public:
-    TreeNode* next;
     void flatten(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        next = NULL;
-        _flatten(root);
+        TreeNode* last = NULL;
+        flattenN(root, last);
     }
-    void _flatten(TreeNode* root) {
+    void flattenN(TreeNode* root, TreeNode*& last) {
         if (root == NULL)
             return;
-        _flatten(root->right);
-        _flatten(root->left);
-        root->right=next;
-        next = root;
-        next->left = NULL;
+        flattenN(root->right, last);
+        flattenN(root->left, last);
+        root->right = last;
+        root->left = NULL;
+        last = root;
     }
 };

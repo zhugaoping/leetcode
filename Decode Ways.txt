@@ -3,46 +3,27 @@ public:
     int numDecodings(string s) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (s.size() == 0)
-            return 0;
-        if ((s.size() == 1) && getOne(s, 0))
-            return 1;
         int size = s.size();
-        int plan[size];
-        memset(plan, 0x00, sizeof(int)*size);
-        if (getOne(s, 0))
-            plan[0]++;
-        if (getTwo(s, 0))
-            plan[1]++;
-        if (getOne(s, 0) && getOne(s, 1))
-            plan[1]++;
-        for (int i = 2; i < size; i++) {
-            int result = 0;
-            if ((plan[i-1] > 0) && getOne(s, i))
-                result += plan[i-1];
-            if ((plan[i-2] > 0) && getTwo(s, i-1))
-                result += plan[i-2];
-            plan[i] = result;
-            
+        if (size == 0)
+            return 0;
+        int plan[size+1];
+        memset(plan, 0, sizeof(int)*(size+1));
+        plan[0] = 1;
+        plan[1] = parseOne(s, 0)?1:0;
+        for (int i = 2; i <= size; i++) {
+            plan[i] += parseOne(s, i-1)?plan[i-1]:0;
+            plan[i] += parseTwo(s, i-2)?plan[i-2]:0;
         }
-        return plan[size-1];
-        
+        return plan[size];
     }
-    bool getOne(string& str, int s) {
-        if (str[s] != '0')
-            return true;
-        else
-            return false;
+    bool parseOne(string& s, int d) {
+        return ((s[d] >= '1') && (s[d] <= '9'));
     }
-    bool getTwo(string& str, int s) {
-        if (str[s] == '1')
+    bool parseTwo(string& s, int d) {
+        if (s[d] == '1')
             return true;
-        else if (str[s] == '2') {
-            if ((str[s+1] >= '0') && (str[s+1] <= '6'))
-                return true;
-            else
-                return false;
-        }
+        else if (s[d] == '2')
+            return ((s[d+1] >= '0') && (s[d+1] <= '6'));
         else
             return false;
     }

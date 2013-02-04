@@ -12,20 +12,16 @@ public:
     vector<int> inorderTraversal(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<int> rs;
-        if (root == NULL)
-            return rs;
-        else
-            inorder(root, rs);
-        return rs;
+        vector<int> rets;
+        if (root != NULL)
+            traverse(root, rets);
+        return rets;   
     }
-    void inorder(TreeNode *root, vector<int>& rs) {
+    void traverse(TreeNode* root, vector<int>& rets) {
         if (root == NULL)
             return;
-        else {
-            inorder(root->left, rs);
-            rs.push_back(root->val);
-            inorder(root->right, rs);
-        }
+        traverse(root->left, rets);
+        rets.push_back(root->val);
+        traverse(root->right, rets);
     }
 };

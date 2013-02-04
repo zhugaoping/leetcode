@@ -1,31 +1,32 @@
 class Solution {
 public:
-    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > results;
-        if (candidates.size() == 0)
-            return results;
-        sort(candidates.begin(), candidates.end());
-        vector<int> current;
-        getPlan(candidates.size() - 1, target, candidates, current, results);
-        return results;
+        vector<vector<int> > rets;
+        vector<int> ret;
+        sort(num.begin(), num.end());
+        plan(rets, ret, num, target, 0);
+        return rets;
     }
-    void getPlan(int d, int c, vector<int>& can, vector<int>& cur, vector<vector<int> >& r) {
-        if (c == 0) {
-            r.push_back(cur);
+    void plan(vector<vector<int> >& rs, vector<int>& r, vector<int>& n, int target, int p) {
+        if (target == 0) {
+            rs.push_back(r);
             return;
         }
-        if (d < 0)
+        if (p == n.size())
             return;
-        int base = can[d];
-        int i = 0;
-        for (i; i*base <= c; i++) {
-            getPlan(d - 1, (c - i*base), can, cur, r);
-            cur.insert(cur.begin(), base);
+        int e = p + 1;
+        while ((e < n.size()) && (n[p] == n[e]))
+            e++;
+        plan(rs, r, n, target, e);
+        int i = 1;
+        for (; (i <= e - p) && (i*n[p] <= target); i++) {
+            r.push_back(n[p]);
+            plan(rs, r, n, target - i*n[p], e);
         }
-        while (i-- > 0) {
-            cur.erase(cur.begin());
-        }
+        i--;
+        while (i--)
+            r.pop_back();
     }
 };

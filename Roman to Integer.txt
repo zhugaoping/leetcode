@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int romanToInt(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int value[255], ret = 0;
+        value['I'] = 1;
+        value['V'] = 5;
+        value['X'] = 10;
+        value['L'] = 50;
+        value['C'] = 100;
+        value['D'] = 500;
+        value['M'] = 1000;
+        int p = 0;
+        while (p < s.size()) {
+            if ((p + 1 < s.size()) && (value[s[p]] < value[s[p+1]]))
+                ret -= value[s[p]];
+            else
+                ret += value[s[p]];
+            p++;
+        }
+        return ret;
+    }
+};

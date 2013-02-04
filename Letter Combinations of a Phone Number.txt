@@ -3,38 +3,31 @@ public:
     vector<string> letterCombinations(string digits) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<string> r;
-        plan(digits, r, "", 0);
-        return r;
+        vector<string> rets;
+        string ret = "";
+        plan(rets, ret, digits, 0);
+        return rets;
     }
-    void plan(string& str, vector<string>& r, string s, int p) {
-        if (p == str.size()) {
-            r.push_back(s);
+    void plan(vector<string>& rs, string r, string& d, int p) {
+        if (p == d.size()) {
+            rs.push_back(r);
             return;
         }
-        char c = str[p];
-        if ((c == '0') || (c == '1')) 
-            plan(str, r, s, p+1);
-        else {
-            int t = ((c == '9') || (c == '7'))?4:3;
-            if (c <= '7') {
-                for (int i = 0; i < t; i++) {
-                    char a = 'a' + (char)((c - '2')*3 + i);
-                    plan(str, r, s + a, p+1);
-                }
-            }
-            if (c == '8') {
-                for (int i = 0; i < t; i++) {
-                    char a = 't' + (char)(i);
-                    plan(str, r, s + a, p+1);
-                }
-            }
-            if (c == '9') {
-                for (int i = 0; i < t; i++) {
-                    char a = 'w' + (char)(i);
-                    plan(str, r, s + a, p+1);
-                }
-            }
+        pair<char, int> option = getOption(d[p] - '0');
+        for (int i = 0; i < option.second; i++)
+            plan(rs, r + (char)(option.first + i), d, p+1);
+    }
+    pair<char, int> getOption(int d) {
+        switch (d) {
+            case 2 : return pair<char, int>('a', 3);
+            case 3 : return pair<char, int>('d', 3);
+            case 4 : return pair<char, int>('g', 3);
+            case 5 : return pair<char, int>('j', 3);
+            case 6 : return pair<char, int>('m', 3);
+            case 7 : return pair<char, int>('p', 4);
+            case 8 : return pair<char, int>('t', 3);
+            case 9 : return pair<char, int>('w', 4);
+            default: return pair<char, int>(' ', 0);
         }
     }
 };

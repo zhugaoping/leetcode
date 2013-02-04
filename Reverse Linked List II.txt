@@ -11,39 +11,26 @@ public:
     ListNode *reverseBetween(ListNode *head, int m, int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        ListNode* h = new ListNode(0);
-        h->next = head;
-        ListNode* p;
-        ListNode* r;
-        ListNode* q;
-        ListNode* t;
-        int i = 1;
-        head = h;
-        while (i < m) {
-            head = head->next; 
-            i++;
+        ListNode* root = new ListNode(0);
+        root->next = head;
+        int num = n - m + 1;
+        ListNode* prev = root;
+        ListNode* tail = root;
+        int move1 = n + 1;
+        int move2 = m - 1;
+        while (move1-- > 0)
+            tail = tail->next;
+        while (move2-- > 0)
+            prev = prev->next;
+        while (num-- > 0) {
+            ListNode* temp = prev->next;
+            prev->next = temp->next;
+            temp->next = tail;
+            tail = temp;
         }
-        p = head;
-        i--;
-        while (i < n) {
-            head = head->next;
-            i++;
-        }
-        r = head;
-        t = head->next;
-        r->next = NULL;
-        q = p->next;
-        while (q != NULL) {
-            p->next = q->next;
-            q->next = t;
-            t = q;
-            q = p->next;
-        }
-        p->next = t;
-        head = h->next;
-        delete h;
+        prev->next = tail;
+        head = root->next;
+        delete root;
         return head;
-        
-        
     }
 };

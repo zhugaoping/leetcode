@@ -12,20 +12,16 @@ public:
     int maxPathSum(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int m = INT_MIN;
+        int mav = INT_MIN;
+        maxPath(root, mav);
+        return mav;
+    }
+    int maxPath(TreeNode* root, int& mav) {
         if (root == NULL)
             return 0;
-        else
-            dfs(root, m);
-        return m;
-    }
-    int dfs(TreeNode* root, int& m) {
-        if (root == NULL)
-            return NULL;
-        int l = max(dfs(root->left, m), 0);
-        int r = max(dfs(root->right, m), 0);
-        if ((l + r + root->val) > m)
-            m = l + r + root->val;
-        return max(l + root->val, r + root->val);
+        int l = max(0, maxPath(root->left, mav));
+        int r = max(0, maxPath(root->right, mav));
+        mav = max(mav, l+r+root->val);
+        return max(l, r) + root->val;
     }
 };

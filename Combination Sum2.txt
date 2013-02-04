@@ -1,37 +1,29 @@
 class Solution {
 public:
-    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > rs;
-        if (num.size() == 0)
-            return rs;
-        sort(num.begin(), num.end());
-        vector<int> r;
-        plan(rs, r, num, target, 0);
-        return rs;
+        vector<vector<int> > rets;
+        vector<int> ret;
+        sort(candidates.begin(), candidates.end());
+        plan(rets, ret, candidates, target, 0);
+        return rets;
     }
-    void plan(vector<vector<int> >& rs, vector<int>& r, vector<int>& c, int t, int d) {
-        if (t == 0) {
+    void plan(vector<vector<int> >& rs, vector<int> r, vector<int> & c, int target, int p) {
+        if (target == 0) {
             rs.push_back(r);
             return;
         }
-        if (d == c.size())
+        if (p == c.size())
             return;
-        int p = d+1;
-        while ((p < c.size()) && (c[p] == c[p-1]))
-            p++;
-        int num = p - d;
-	int j
-        for (; j <= num; j++) {
-            if (j*c[d] > t)
-                break;
-            plan(rs, r, c, t - j*c[d], p);
-	    r.push_back(c[d]);
-            
+        plan(rs, r, c, target, p+1);
+        int i = 1;
+        for (; c[p]*i <= target; i++) {
+            r.push_back(c[p]);
+            plan(rs, r, c, target - c[p]*i, p+1);
         }
-	for (; j>0; j--)
+        i--;
+        while(i--)
             r.pop_back();
-        
     }
 };
