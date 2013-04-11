@@ -1,0 +1,51 @@
+class Solution {
+public:
+    void solve(vector<vector<char>> &board) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int nrows = board.size();
+        if (!nrows)
+            return;
+        int ncols = board[0].size();
+        if (!ncols)
+            return;
+        vector<vector<bool>> state(nrows, vector<bool>(ncols, 0));
+        for (int i = 0; i < nrows; i++)
+            for (int j = 0; j < ncols; j++)
+                if ((board[i][j] == 'O') && !state[i][j]) {
+                    vector<int> block;
+                    bool flag = true;
+                    traverse(board, state, block, i, j, flag);
+                    if (flag)
+                        for (int k = 0; k < block.size(); k++)
+                            board[block[k]/board.size()][block[k]%board.size()] = 'X';
+                }
+    }
+    void traverse(vector<vector<char>> &d, vector<vector<bool>> &s, vector<int> &b, int i, int j, bool &flag) {
+        b.push_back(i*d.size() + j);
+        s[i][j] = 1;
+        int p = 0;
+        while (p < b.size()) {
+            int pi = b[p]/d.size(), pj = b[p]%d.size();
+            if ((pi == 0) || (pj == 0) || (pi == d.size() - 1) || (pj == d[0].size() - 1))
+                flag = false;
+            if ((pi + 1 < d.size()) && !s[pi+1][pj] && (d[pi+1][pj] == 'O')) {
+                b.push_back((pi+1)*d.size()+pj);
+                s[pi+1][pj] = 1;
+            }
+            if ((pi - 1 >= 0) && !s[pi-1][pj] && (d[pi-1][pj] == 'O')) {
+                b.push_back((pi-1)*d.size()+pj);
+                s[pi-1][pj] = 1;
+            }
+            if ((pj + 1 < d[0].size()) && !s[pi][pj+1] && (d[pi][pj+1] == 'O')) {
+                b.push_back(pi*d.size()+pj+1);
+                s[pi][pj+1] = 1;
+            }
+            if ((pj - 1 >= 0) && !s[pi][pj-1] && (d[pi][pj-1] == 'O')) {
+                b.push_back(pi*d.size()+pj-1);
+                s[pi][pj-1] = 1;
+            }
+            p++;
+        }
+    }
+};

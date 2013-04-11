@@ -12,26 +12,27 @@ public:
     vector<vector<int> > levelOrderBottom(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > rets;
+        vector<vector<int>> rets;
         if (root == NULL)
             return rets;
-        vector<TreeNode*> inner, outer;
-        inner.push_back(root);
-        while (!inner.empty()) {
-            outer.clear();
-            vector<int> ret;
-            rets.insert(rets.begin(), ret);
-            while (inner.size() > 0) {
-                TreeNode* cur = *inner.begin();
-                inner.erase(inner.begin());
-                rets.front().push_back(cur->val);
-                if (cur->left)
-                    outer.push_back(cur->left);
-                if (cur->right)
-                    outer.push_back(cur->right);
+        list<TreeNode*>* inner = new list<TreeNode*>, *outer;
+        inner->push_back(root);
+        while(!inner->empty()) {
+            outer = new list<TreeNode*>;
+            rets.insert(rets.begin(), vector<int>(0));
+            while(!inner->empty()) {
+                TreeNode* node = inner->front();
+                inner->pop_front();
+                rets.front().push_back(node->val);
+                if (node->left)
+                    outer->push_back(node->left);
+                if (node->right)
+                    outer->push_back(node->right);
             }
+            delete inner;
             inner = outer;
         }
+        delete inner;
         return rets;   
     }
 };

@@ -3,25 +3,12 @@ public:
     void merge(int A[], int m, int B[], int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (n == 0)
-            return;
-        for (int i = m - 1; i >= 0; i--)
-            A[n+i] = A[i];
-        int a = n;
-        int b = 0;
-        int i = 0;
-        while ((a < (m + n)) && (b < n)) {
-            if (A[a] <= B[b]) {
-                A[i++] = A[a];
-                a++;
-            } else {
-                A[i++] = B[b];
-                b++;
-            }
-        }
-        while (b < n) {
-            A[i++] = B[b];
-            b++;
-        }
+        int ap = m - 1, bp = n - 1, p = m + n - 1;
+        while (ap >= 0 && bp >= 0)
+            A[p--] = (A[ap] >= B[bp])?A[ap--]:B[bp--];
+        while (ap >= 0)
+            A[p--] = A[ap--];
+        while (bp >= 0)
+            A[p--] = B[bp--];
     }
 };

@@ -5,14 +5,14 @@ public:
         // DO NOT write int main() function
         if (!m || !n)
             return 0;
-        if ((m == 1) || (n == 1))
-            return 1;
-        int l = max(m, n), s = min(m, n);
-        double upper = 1, lower = 1;
-        for (int i = l; i <= m+n-2; i++)
-            upper *= i;
-        for (int i = 1; i <= s - 1; i++)
-            lower *= i;
-        return (int)(upper/lower);
+        int path[m][n];
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++) {
+                if (!i && !j)
+                    path[i][j] = 1;
+                else
+                    path[i][j] = (i?path[i-1][j]:0) + (j?path[i][j-1]:0);
+            }
+        return path[m-1][n-1];
     }
 };

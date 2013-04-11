@@ -3,42 +3,43 @@ public:
     vector<vector<string> > solveNQueens(int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<string> > rets;
-        string empty(n, '.');
-        vector<string> ret(n, empty);
-        vector<int> pos;
+        vector<vector<string>> rets;
+        if (n == 0)
+            return rets;
+        vector<int> plan(n, 0);
         for (int i = 0; i < n; i++)
-            pos.push_back(i);
-        plan(rets, ret, pos, 0);
+            plan[i] = i;
+        solve(plan, 0, n, rets);
         return rets;
     }
-    void plan(vector<vector<string> > &rets, vector<string> & ret, vector<int>& pos, int p) {
-        if (p == pos.size()) {
-            rets.push_back(ret);
-            for (int i = 0; i < pos.size(); i++)
-                rets.back()[i][pos[i]] = 'Q';
-        }
-        else {
-            if (check(pos, p))
-                plan(rets, ret, pos, p+1);
-            for (int i = p + 1; i < pos.size(); i++) {
-                swap(pos[p], pos[i]);
-                if (check(pos, p))
-                    plan(rets, ret, pos, p+1);
-                swap(pos[p], pos[i]);
+    void solve(vector<int> &plan, int p, int n, vector<vector<string>> &r) {
+        if (p == n) {
+            r.push_back(vector<string>(0));
+            for (int i = 0; i < n; i++) {
+                string s(n, '.');
+                s[plan[i]] = 'Q';
+                r.back().push_back(s);
             }
+            return;
+        }
+        if (valid(plan, p))
+            solve(plan, p+1, n, r);
+        for (int i = p + 1; i < n; i++) {
+            swapp(plan, p, i);
+            if (valid(plan, p))
+                solve(plan, p+1, n, r);
+            swapp(plan, p, i);
         }
     }
-    bool check(vector<int> &pos, int p) {
-        for (int i = 0; i < p; i++) {
-            if (abs(i-p) == abs(pos[i] - pos[p]))
-                    return false;
-        }
+    void swapp(vector<int> &plan, int i, int j) {
+        int t = plan[j];
+        plan[j] = plan[i];
+        plan[i] = t;
+    }
+    bool valid(vector<int> &plan, int p) {
+        for (int i = 0; i < p; i++)
+            if (abs(p - i) == abs(plan[p] - plan[i]))
+                return false;
         return true;
-    }
-    void swap(int& a, int& b) {
-        int t = a;
-        a = b;
-        b = t;
     }
 };

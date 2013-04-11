@@ -3,16 +3,16 @@ public:
     vector<int> grayCode(int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<int> codes;
-        codes.push_back(0);
+        vector<int> ret;
+        ret.push_back(0);
         if (n == 0)
-            return codes;
-        codes.push_back(1);
-        for (int i = 2; i <= n; i++) {
-            int size = codes.size();
-            for (int j = size - 1; j >= 0 ; j--)
-                codes.push_back(codes[j] | (1<< (i - 1))); 
+            return ret;
+        ret.push_back(1);
+        for (int i = 1; i < n; i++) {
+            int size = ret.size();
+            for (int j = size - 1; j >= 0; j--)
+                ret.push_back(ret[j] | (1<<i));
         }
-        return codes;
+        return ret;
     }
 };

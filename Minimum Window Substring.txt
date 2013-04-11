@@ -3,66 +3,47 @@ public:
     string minWindow(string S, string T) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int ssize = S.size();
-        int tsize = T.size();
-        if (ssize == 0)
+        vector<int> tuse(255, 0), suse(255, 0);
+        vector<char> tcha;
+        string ret;
+        int tsize = T.size(), ssize = S.size(), snum = 0, l = -1, i = 0, w = INT_MAX;
+        if (!tsize || !ssize || (tsize > ssize))
             return "";
-        if (tsize == 0)
-            return "";
-        string result;
-        int t[255], s[255], tnum = 0, snum = 0;
-        set<char> pos;
-        memset(t, 0x00, sizeof(int)*255);
-        memset(s, 0x00, sizeof(int)*255);
         for (int i = 0; i < tsize; i++) {
-            t[T[i]]++;
-            tnum++;
-            pos.insert(T[i]);
+            tuse[T[i]]++;
+            if (tuse[T[i]] == 1)
+                tcha.push_back(T[i]);
         }
-        int min = ssize+1;
-        int sta = 0;
-        while((sta < ssize) && (t[S[sta]] == 0))
-            sta++;
-        for (int i = sta; i < ssize; i++) {
-            if (t[S[i]] > 0) {
-                s[S[i]]++;
+        while (i < ssize) {
+            if (tuse[S[i]] != 0) {
+                l = (l == -1)?i:l;
+                suse[S[i]]++;
                 snum++;
-                if (s[S[i]] > t[S[i]]) {
-                    while (true) {
-                        if (t[S[sta]] == 0) {
-                            sta++;
-                            continue;
-                        }
-                        else {
-                            if (s[S[sta]] > t[S[sta]]) {
-                                s[S[sta]]--;
-                                sta++;
-                                snum--;
-                            }
-                            else
-                                break;
-                        }
+                if (tuse[S[i]] < suse[S[i]]) {
+                    while(true) {
+                        if (tuse[S[l]] == 0)
+                            l++;
+                        else if (tuse[S[l]] < suse[S[l]]) {
+                            suse[S[l]]--;
+                            snum--;
+                            l++;
+                        } else
+                            break;
                     }
                 }
-                if ((snum >= tnum) && (check(s, t, pos)) && ((i + 1 - sta) < min)) {
-                    min = i + 1 - sta;
-                    result = S.substr(sta, min);
+                if ((snum >= tsize) && check(tuse, suse, tcha) && (w > (i - l + 1))) {
+                    w = i - l + 1;
+                    ret = S.substr(l, w);
                 }
             }
+            i++;
         }
-        return result;
-        
+        return ret;   
     }
-    bool check(int* s, int* t, set<char>& pos) {
-        bool flag = true;
-        set<char>::iterator p = pos.begin();
-        while (p != pos.end()) {
-            if (s[*p] < t[*p]) {
-                flag = false;
-                break;
-            }
-            p++;
-        }
-        return flag;
+    bool check(vector<int>& t, vector<int>& s, vector<char>& c) {
+        for (size_t i = 0; i < c.size(); i++)
+            if (t[c[i]] > s[c[i]])
+                return false;
+        return true;
     }
 };

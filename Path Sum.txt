@@ -12,27 +12,13 @@ public:
     bool hasPathSum(TreeNode *root, int sum) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (root == NULL)
-            return false;
-        else
-            return test(root, sum);
-        
+        return root?solve(root, sum):false;
     }
-    bool test(TreeNode *root, int sum) {
-        if ((root->left == NULL) && (root->right == NULL)) {
-            if (root->val == sum)
-                return true;
-            else
-                return false;
-        }
-        bool l = false, r = false;
-        if (root->left != NULL)
-            l = test(root->left, sum - root->val);
-        if (root->right != NULL)
-            r = test(root->right, sum - root->val);
-        if (l || r)
+    bool solve(TreeNode* r, int s) {
+        if (!r->left && !r->right)
+            return (s == r->val);
+        if (r->left && solve(r->left, s - r->val))
             return true;
-        else
-            return false;
+        return (r->right && solve(r->right, s - r->val));
     }
 };

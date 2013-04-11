@@ -12,19 +12,16 @@ public:
     bool isBalanced(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (!root)
-            return true;
         bool ret = true;
         height(root, ret);
         return ret;
     }
-    int height(TreeNode* root, bool& ret) {
-        if (root == NULL)
+    int height(TreeNode* root, bool &ret) {
+        if (!root)
             return 0;
-        int lh = height(root->left, ret);
-        int rh = height(root->right, ret);
-        if (abs(lh - rh) > 1)
-            ret = false;
-        return max(lh, rh) + 1;
+        int l = height(root->left, ret);
+        int r = height(root->right, ret);
+        ret = (abs(l - r) > 1)?false:ret;
+        return max(l, r)+1;
     }
 };

@@ -12,25 +12,21 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         multimap<int, ListNode*> front;
-        for (int i = 0; i < lists.size(); i++) {
-            if (lists[i] != NULL)
-                front.insert(make_pair<int, ListNode*>(lists[i]->val, lists[i]));
+        for (size_t i = 0; i < lists.size(); i++)
+            if (lists[i])
+                front.insert(make_pair(lists[i]->val, lists[i]));
+        ListNode *head = new ListNode(0), *tail = head;
+        while (!front.empty()) {
+            multimap<int, ListNode*>::iterator it = front.begin();
+            tail->next = it->second;
+            tail = tail->next;
+            front.erase(it);
+            if (tail->next)
+                front.insert(make_pair(tail->next->val, tail->next));
         }
-        ListNode* head = new ListNode(0);
-        ListNode* tail = head;
-        while (front.size() > 0) {
-            ListNode* pops = front.begin()->second;
-            front.erase(front.begin());
-            tail->next = pops;
-            ListNode* node = pops->next;
-            if (node != NULL)
-                front.insert(make_pair<int, ListNode*>(node->val, node));
-            pops->next = NULL;
-            tail = pops;
-        }
-        ListNode* temp = head;
-        head = head->next;
-        delete temp;
-        return head;
+        tail = head->next;
+        delete head;
+        return tail;
+        
     }
 };

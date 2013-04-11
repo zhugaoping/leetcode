@@ -3,24 +3,20 @@ public:
     vector<vector<int> > generateMatrix(int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > rets;
-        for (int i = 0; i < n; i++) {
-            vector<int> ret(n, 0);
-            rets.push_back(ret);
-        }
-        int p = 1, round = n/2;
+        vector<vector<int>> matrix(n, vector<int>(n, 0));
+        int round = n/2, p = 1;
         for (int i = 0; i < round; i++) {
             for (int j = i; j < n - 1 - i; j++)
-                rets[i][j] = p++;
+                matrix[i][j] = p++;
             for (int j = i; j < n - 1 - i; j++)
-                rets[j][n - 1 - i] = p++;
+                matrix[j][n-1-i] = p++;
             for (int j = n - 1 - i; j > i; j--)
-                rets[n - 1 - i][j] = p++;
+                matrix[n-1-i][j] = p++;
             for (int j = n - 1 - i; j > i; j--)
-                rets[j][i] = p++;
+                matrix[j][i] = p++;
         }
         if (n%2)
-            rets[round][round] = p;
-        return rets;
+            matrix[round][round] = p;
+        return matrix;
     }
 };

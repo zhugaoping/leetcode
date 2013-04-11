@@ -2,26 +2,23 @@ class Solution {
 public:
     vector<vector<int> > permute(vector<int> &num) {
         // Start typing your C/C++ solution below
-        // DO NOT write int main() function   
+        // DO NOT write int main() function
         vector<vector<int> > rets;
-        if (num.size() == 0)
-            return rets;
-        plan(rets, num, 0);
+        solve(rets, num, 0);
         return rets;
     }
-    void plan(vector<vector<int> >& rets, vector<int>& ret, int p) {
-        if (p == ret.size() - 1) {
-            rets.push_back(ret);
-            return;
-        }
-        plan(rets, ret, p+1);
-        for (int i = p + 1; i < ret.size(); i++) {
-            swap(ret[i], ret[p]);
-            plan(rets, ret, p+1);
-            swap(ret[i], ret[p]);
+    void solve(vector<vector<int>> &rs, vector<int> &r, int p) {
+        if (p == r.size())
+            rs.push_back(r);
+        else {
+            for (int i = p; i < r.size(); i++) {
+                swap(r[i], r[p]);
+                solve(rs, r, p + 1);
+                swap(r[i], r[p]);
+            }
         }
     }
-    void swap(int& a, int& b) {
+    void swap(int &a, int &b) {
         int t = a;
         a = b;
         b = t;

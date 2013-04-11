@@ -11,19 +11,14 @@ public:
     ListNode *deleteDuplicates(ListNode *head) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        ListNode* temp = head;
-        while (temp) {
-            if (temp->next == NULL)
-                break;
-            ListNode* tail = temp->next;
-            while (tail && (tail->val == temp->val))
+        ListNode *tail = head, *temp;
+        while (tail) {
+            if (tail->next && (tail->val == tail->next->val)) {
+                temp = tail->next;
+                tail->next = temp->next;
+                delete temp;
+            } else
                 tail = tail->next;
-            while (temp->next != tail) {
-                ListNode* dele = temp->next;
-                temp->next = dele->next;
-                delete dele;
-            }
-            temp = tail;
         }
         return head;
     }

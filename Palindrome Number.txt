@@ -5,14 +5,14 @@ public:
         // DO NOT write int main() function
         if (x < 0)
             return false;
-        int div = 1;
-        while (x/div >= 10)
-            div *= 10;
-        while (x >= 10) {
-            if (x/div != x%10)
+        int p = 1;
+        while (x/p >= 10)
+            p*=10;
+        while(x >= 10) {
+            if (x/p != x%10)
                 return false;
-            x = (x % div)/10;
-            div = div/100;
+            x = (x%p)/10;
+            p /= 100;
         }
         return true;
     }

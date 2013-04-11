@@ -3,38 +3,36 @@ public:
     string intToRoman(int num) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        string result = "";
-        print(result, num/1000, '0', '0', 'M');
-        num -= (num/1000)*1000;
-        print(result, num/100, 'M', 'D', 'C');
-        num -= (num/100)*100;
-        print(result, num/10, 'C', 'L', 'X');
-        num -= (num/10)*10;
-        print(result, num, 'X', 'V', 'I');
-        return result;
-        
+        string ret;
+        transform(ret, num, 'X', 'V', 'I');
+        num/=10;
+        transform(ret, num, 'C', 'L', 'X');
+        num/=10;
+        transform(ret, num, 'M', 'D', 'C');
+        num/=10;
+        transform(ret, num, ' ', ' ', 'M');
+        for (int i = 0; i < ret.size()/2; i++) {
+            char t = ret[i];
+            ret[i] = ret[ret.size() - 1 - i];
+            ret[ret.size() - 1 - i] = t;
+        }
+        return ret;
     }
-    void print(string& result, int num, char ten, char five, char one) {
-        if (num == 9) {
-            result += one;
-            result += ten;
-        }
-        if ((num >= 5) && (num <= 8)) {
-            result += five;
-            while (num > 5) {
-                result += one;
-                num--;
-            }
-        }
-        if (num == 4) {
-            result += one;
-            result += five;
-        }
-        if ((num <= 3) && (num >= 1)) {
-            while (num > 0) {
-                result += one;
-                num--;
-            }
+    void transform(string& ret, int num, char ten, char five, char one) {
+        int t = num%10;
+        if (t == 9) {
+            ret += ten;
+            ret += one;
+        } else if (t >= 5) {
+            while (t-- > 5)
+                ret += one;
+            ret += five;
+        } else if (t == 4) {
+            ret += five;
+            ret += one;
+        } else {
+            while (t-- > 0)
+                ret += one;
         }
     }
 };

@@ -3,28 +3,24 @@ public:
     void nextPermutation(vector<int> &num) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int size = num.size();
-        if ((size == 0) || (size == 1))
+        if (num.empty())
             return;
-        int mav = num.back(), i = size - 2;
+        int mval = num.back(), mind = num.size() - 1, i = num.size() - 2;
         for (; i >= 0; i--) {
-            if (num[i] < mav)
-                break;
-            mav = max(mav, num[i]);
+            if (num[i] < num[mind]) {
+                for (int k = i + 1; k < num.size(); k++)
+                    if ((num[k] > num[i]) && (num[k] < num[mind]))
+                        mind = k;
+                break;  
+            } else
+                mind = i;
         }
         if (i < 0)
             sort(num.begin(), num.end());
         else {
-            int pos = 0, dif = INT_MAX;
-            for (int j = i + 1; j < size; j++) {
-                if ((num[i] < num[j]) && ((num[j] - num[i]) < dif)) {
-                    pos = j;
-                    dif = num[j] - num[i];
-                }
-            }
             int t = num[i];
-            num[i] = num[pos];
-            num[pos] = t;
+            num[i] = num[mind];
+            num[mind] = t;
             sort(num.begin()+i+1, num.end());
         }
     }

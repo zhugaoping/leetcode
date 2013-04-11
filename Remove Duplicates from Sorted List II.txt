@@ -11,28 +11,26 @@ public:
     ListNode *deleteDuplicates(ListNode *head) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (head == NULL)
-            return head;
-        ListNode* root = new ListNode(0);
-        ListNode* tail = root;
-        while (head != NULL) {
-            ListNode* temp = head->next;
-            while ((temp != NULL) && (temp->val == head->val))
+        ListNode *root = new ListNode(0), *tail = root, *temp, *dele;
+        while (head) {
+            temp = head->next;
+            while (temp && (temp->val == head->val))
                 temp = temp->next;
             if (temp == head->next) {
                 tail->next = head;
                 tail = tail->next;
-                tail->next = NULL;
                 head = temp;
-            }
-            while (head != temp) {
-                ListNode* t = head;
-                head = head->next;
-                delete t;
+            } else {
+                while (head != temp) {
+                    dele = head;
+                    head = head->next;
+                    delete dele;
+                }
             }
         }
+        tail->next = NULL;
         head = root->next;
         delete root;
-        return head;    
+        return head;
     }
 };

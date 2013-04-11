@@ -3,17 +3,23 @@ public:
     int divide(int dividend, int divisor) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
+        if (divisor == 1)
+            return dividend;
+        if (divisor == -1)
+            return (dividend == INT_MIN)?INT_MAX:-dividend;
+        if (dividend == 0)
+            return 0;
         bool pos = true;
-        double upper = dividend, lower = divisor;
+        double a = dividend, b = divisor;
         if (dividend < 0) {
             pos = !pos;
-            upper = -upper;
+            a = -a;
         }
         if (divisor < 0) {
             pos = !pos;
-            lower = -lower;
+            b = -b;
         }
-        double ret = exp(log(upper) - log(lower));
-        return pos?ret:-ret;
+        int result = exp(log(a) - log(b));
+        return pos?result:-result;
     }
 };

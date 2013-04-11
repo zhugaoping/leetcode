@@ -13,25 +13,23 @@ public:
         // DO NOT write int main() function
         if (head == NULL)
             return head;
-        ListNode* tail = head;
-        int num = 1;
+        ListNode *temp = head, *tail = head;
+        int n = 1;
         while (tail->next != NULL) {
-            num++;
             tail = tail->next;
+            n++;
         }
-        int mov = k%num;
-        if (mov == 0)
-            return head;
-        ListNode* root = new ListNode(0);
-        ListNode* prev = head;
-        int p = (num - mov) - 1;
-        while (p--)
-            prev = prev->next;
-        root->next = prev->next;
-        tail->next = head;
-        prev->next = NULL;
-        head = root->next;
-        delete root;
+        int m = k%n;
+        if (m > 0) {
+            n = n - m - 1;
+            temp = head;
+            while (n--)
+                temp = temp->next;
+            ListNode* newh = temp->next;
+            tail->next = head;
+            temp->next = NULL;
+            head = newh;
+        }
         return head;
     }
 };

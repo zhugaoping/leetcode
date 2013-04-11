@@ -13,17 +13,15 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         int p = 0;
-        return build(preorder, p, inorder, 0, inorder.size()-1);
+        return build(preorder, p, inorder, 0, inorder.size() - 1);
     }
     TreeNode* build(vector<int>& po, int& p, vector<int>& io, int l, int u) {
         if (l > u)
             return NULL;
-        TreeNode* root = new TreeNode(po[p]);
-        int i;
-        for (i = l; i <= u; i++)
-            if (io[i] == po[p])
-                break;
-        p++;
+        int v = po[p++], i = l;
+        TreeNode* root = new TreeNode(v);
+        while (io[i] != v)
+            i++;
         root->left = build(po, p, io, l, i-1);
         root->right = build(po, p, io, i+1, u);
         return root;

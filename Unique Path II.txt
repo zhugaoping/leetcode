@@ -4,30 +4,23 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         int nrows = obstacleGrid.size();
-        int ncols = obstacleGrid[0].size();
-        if (!nrows || !ncols)
+        if (!nrows)
             return 0;
-        int mat[nrows][ncols];
-        int i = 0;
-        for (; i < ncols; i++) {
-            if (obstacleGrid[0][i])
-                break;
-            mat[0][i] = 1;
-        }
-        for (; i < ncols; i++)
-            mat[0][i] = 0;
-        i = 0;
-        for (; i < nrows; i++) {
-            if (obstacleGrid[i][0])
-                break;
-            mat[i][0] = 1;
-        }
-        for (; i < nrows; i++)
-            mat[i][0] = 0;
-        for (int i = 1; i < nrows; i++) {
-            for (int j = 1; j < ncols; j++)
-                mat[i][j] = (obstacleGrid[i][j])?0:mat[i-1][j] + mat[i][j-1];
-        }
-        return mat[nrows-1][ncols-1];
+        int ncols = obstacleGrid[0].size();
+        if (!ncols)
+            return 0;
+        int path[nrows][ncols];
+        for (int i = 0; i < nrows; i++)
+            for (int j = 0; j < ncols; j++) {
+                if (obstacleGrid[i][j] == 1)
+                    path[i][j] = 0;
+                else {
+                    if (!i && !j)
+                        path[i][j] = 1;
+                    else
+                        path[i][j] = (i?path[i-1][j]:0) + (j?path[i][j-1]:0);
+                }
+            }
+        return path[nrows-1][ncols-1];
     }
 };

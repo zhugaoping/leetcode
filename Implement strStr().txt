@@ -3,30 +3,25 @@ public:
     char *strStr(char *haystack, char *needle) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (!needle || (*needle == 0))
-            return haystack;
-        if (!haystack || (*haystack == 0))
+        if (!haystack || !needle)
             return NULL;
-        char *s = haystack;
-        char *e = haystack;
-        char *t = needle;
-        while (*++t)
-            e++;
-        while (*e) {
-            char* m = s;
-            char* n = needle;
-            while ((*m != 0) && (*n != 0) && (*m == *n)) {
-                m++;
-                n++;
+        if (!*needle)
+            return haystack;
+        int nsize = strlen(needle)-1;
+        char* htail = haystack;
+        while (*htail && nsize--)
+            htail++;
+        while (*htail) {
+            char* nhead = needle, *hhead = haystack;
+            while (*nhead && (*hhead == *nhead)) {
+                hhead++;
+                nhead++;
             }
-            if (*n == 0)
-                return s;
-            else {
-                s++;
-                e++;
-            }
+            if (!*nhead)
+                return haystack;
+            haystack++;
+            htail++;
         }
         return NULL;
-        
     }
 };

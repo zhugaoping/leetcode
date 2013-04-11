@@ -9,35 +9,35 @@
  */
 class Solution {
 public:
-    TreeNode *last, *t1, *t2;
     void recoverTree(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        last = NULL, t1 = NULL;
-        findFirst(root);
-        last = NULL, t2 = NULL;
-        findSecond(root);
-        int temp = t1->val;
-        t1->val = t2->val;
-        t2->val = temp;
-        
+        TreeNode *prev = NULL, *succ = NULL;
+        TreeNode *l = findFirst(root, prev), *r = findLast(root, succ);
+        int t = l->val;
+        l->val = r->val;
+        r->val = t;
     }
-    void findFirst(TreeNode* root) {
-        if (root == NULL)
-            return;
-        findFirst(root->left);
-        if (last != NULL)
-            t1 = (root->val < last->val)?root:t1;
-        last = root;
-        findFirst(root->right);
+    TreeNode* findFirst(TreeNode* root, TreeNode*& prev) {
+        if (!root)
+            return NULL;
+        TreeNode* l = findFirst(root->left, prev);
+        if (l)
+            return l;
+        if (prev && (prev->val > root->val))
+            return prev;
+        prev = root;
+        return findFirst(root->right, prev);
     }
-    void findSecond(TreeNode* root) {
-        if (root == NULL)
-            return;
-        findSecond(root->right);
-        if (last != NULL)
-            t2 = (root->val > last->val)?root:t2;
-        last = root;
-        findSecond(root->left);
+    TreeNode* findLast(TreeNode* root, TreeNode*& succ) {
+        if (!root)
+            return NULL;
+        TreeNode* r = findLast(root->right, succ);
+        if (r)
+            return r;
+        if (succ && (root->val > succ->val))
+            return succ;
+        succ = root;
+        return findLast(root->left, succ);
     }
 };

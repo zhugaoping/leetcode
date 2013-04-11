@@ -4,33 +4,26 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         vector<vector<int> > rets;
-        if (num.size() == 0)
-            return rets;
-        sort(num.begin(), num.end());
-        vector<int> use(num.size(), 0);
         vector<int> ret;
-        plan(rets, ret, num, use, 0);
+        sort(num.begin(), num.end());
+        vector<bool> use(num.size(), false);
+        solve(rets, ret, num, use, 0);
         return rets;
     }
-    void plan(vector<vector<int> >& rs, vector<int>& r, vector<int>& n, vector<int>& u, int d) {
-        if (d == n.size()) {
+    void solve(vector<vector<int>> &rs, vector<int> &r, vector<int> &n, vector<bool> &u, int p) {
+        if (p == n.size())
             rs.push_back(r);
-            return;
-        }
-        int last = -1;
-        for (int i = 0; i < n.size(); i++) {
-            if (u[i])
-                continue;
-            else if ((last >= 0) && (n[last] == n[i]))
-                continue;
-            else {
-                last = i;
-                r.push_back(n[i]);
-                u[i] = 1;
-                plan(rs, r, n, u, d+1);
-                u[i] = 0;
-                r.pop_back();
-            }
+        else if (p < n.size()){
+            int last = -1;
+            for (int i = 0; i < n.size(); i++)
+                if (!u[i] && ((last == -1) || (n[i] != n[last]))) {
+                        r.push_back(n[i]);
+                        u[i] = true;
+                        solve(rs, r, n, u, p + 1);
+                        u[i] = false;
+                        r.pop_back();
+                        last = i;
+                }
         }
     }
 };

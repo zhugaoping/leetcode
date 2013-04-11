@@ -3,23 +3,24 @@ public:
     int minimumTotal(vector<vector<int> > &triangle) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int row = triangle.size();
-        if (row == 0)
-            return -1;
-        for (int i = 1; i < row; i++) {
+        if (triangle.empty())
+            return 0;
+        vector<int> inner(triangle.size(), 0), outer(triangle.size(), 0);
+        for (int i = 0; i < triangle.size(); i++) {
+            vector<int> &t = triangle[i];
             for (int j = 0; j <= i; j++) {
                 if (j == 0)
-                    triangle[i][j] += triangle[i-1][j];
+                    outer[j] = inner[j] + t[j];
                 else if (j == i)
-                    triangle[i][j] += triangle[i-1][j-1];
+                    outer[j] = inner[j-1] + t[j];
                 else
-                    triangle[i][j] += min(triangle[i-1][j-1], triangle[i-1][j]);
+                    outer[j] = t[j] + min(inner[j-1], inner[j]);
             }
-            
+            inner = outer;
         }
-        int m = INT_MAX;
-        for (int i = 0; i < triangle.back().size(); i++)
-            m = min(triangle.back()[i], m);
-        return m;
+        int miv = INT_MAX;
+        for (int i = 0; i < triangle.size(); i++)
+            miv = min(miv, inner[i]);
+        return miv;
     }
 };

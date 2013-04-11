@@ -4,33 +4,25 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         vector<vector<int> > rets;
-        int size = S.size();
-        if (size == 0)
-            return rets;
-        sort(S.begin(), S.end());
         vector<int> ret;
-        traverse(rets, ret, S, 0);
+        sort(S.begin(), S.end());
+        solve(rets, ret, S, 0);
         return rets;
     }
-    void traverse(vector<vector<int> > &rets, vector<int> &ret, vector<int> &S, int p) {
-        if (p == S.size()) {
-            rets.push_back(ret);
+    void solve(vector<vector<int> > &rs, vector<int> &r, vector<int> &s, int p) {
+        if (p == s.size()) {
+            rs.push_back(r);
             return;
         }
-        else {
-            int e = p + 1, n = 1;
-            while ((e < S.size()) && (S[e] == S[e-1])) {
-                e++;
-                n++;
-            }
-            int r = n;
-            traverse(rets, ret, S, e);
-            while (r--){
-                ret.push_back(S[p]);
-                traverse(rets, ret, S, e);
-            }
-            while (n--)
-                ret.pop_back();
+        int n = p + 1;
+        while ((n < s.size()) && (s[n] == s[p]))
+            n++;
+        solve(rs, r, s, n);
+        for (int i = 1; i <= n - p; i++) {
+            r.push_back(s[p]);
+            solve(rs, r, s, n);
         }
+        for (int i = 1; i <= n - p; i++)
+            r.pop_back();
     }
 };

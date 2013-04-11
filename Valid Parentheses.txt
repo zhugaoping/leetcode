@@ -1,25 +1,31 @@
 class Solution {
 public:
-    bool isPalindrome(string s) {
+    bool isValid(string s) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (s == "")
-            return true;
-        int l = 0, u = s.size() - 1;
-        while ((l < u) && !(isalpha(s[l]) || isdigit(s[l])))
-            l++;
-        while ((l < u) && !(isalpha(s[u]) || isdigit(s[u])))
-            u--;
-        while (l < u) {
-            if (tolower(s[l]) != tolower(s[u]))
-                return false;
-            l++;
-            u--;
-            while ((l < u) && !(isalpha(s[l]) || isdigit(s[l])))
-                l++;
-            while ((l < u) && !(isalpha(s[u]) || isdigit(s[u])))
-                u--;
+        vector<char> stack;
+        for (int i = 0; i < s.size(); i++) {
+            if ((s[i] == '(') || (s[i] == '[') || (s[i] == '{'))
+                stack.push_back(s[i]);
+            if (s[i] == ')') {
+                if (stack.empty() || (stack.back() == '[') || (stack.back() == '{'))
+                    return false;
+                else
+                    stack.pop_back();
+            }
+            if (s[i] == ']') {
+                if (stack.empty() || (stack.back() == '(') || (stack.back() == '{'))
+                    return false;
+                else
+                    stack.pop_back();
+            }
+            if (s[i] == '}') {
+                if (stack.empty() || (stack.back() == '(') || (stack.back() == '['))
+                    return false;
+                else
+                    stack.pop_back();
+            }
         }
-        return true;
+        return stack.empty();
     }
 };

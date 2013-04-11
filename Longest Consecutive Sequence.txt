@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int longestConsecutive(vector<int> &num) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        unordered_set<int> all;
+	for (size_t i = 0; i < num.size(); i++)
+	    all.insert(num[i]);
+	int mav = 0;
+	while (!all.empty()) {
+	    int p = *all.begin(), l = p - 1, r = p + 1;
+	    all.erase(all.begin());
+	    while (!all.empty() && all.erase(l))
+                l--;
+	    while (!all.empty() && all.erase(r))
+                r++;
+	    mav = max(mav, r - l - 1);	
+	}
+	return mav;
+    }
+};

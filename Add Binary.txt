@@ -3,33 +3,26 @@ public:
     string addBinary(string a, string b) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (a == "")
+        if (a.empty())
             return b;
-        if (b == "")
+        if (b.empty())
             return a;
-        int ap = a.size() - 1, bp = b.size() - 1, ca = 0, sum = 0;
-        string ret;
-        while ((ap >= 0) && (bp >= 0)) {
-            sum = (a[ap] - '0') + (b[bp] - '0') + ca;
-            ret = (char)('0' + sum%2) + ret;
-            ca = (sum >= 2);
-            ap--;
-            bp--;
-        }
-        while ((bp < 0) && (ap >= 0)) {
-            sum = (a[ap] - '0') + ca;
-            ret = (char)('0' + sum%2) + ret;
-            ca = (sum >= 2);
-            ap--;
-        }
-        while ((ap < 0) && (bp >= 0)) {
-            sum = (b[bp] - '0') + ca;
-            ret = (char)('0' + sum%2) + ret;
-            ca = (sum >= 2);
-            bp--;
+        string ret = "";
+        int ap = a.size() - 1, bp = b.size() - 1, ca = 0;
+        while ((ap >= 0) || (bp >= 0)) {
+            int sum = ((ap >= 0)?a[ap] - '0':0) + ((bp >= 0)?b[bp] - '0':0) + ca;
+            ret = ret + (char)(sum%2 + '0');
+            ca = sum/2;
+            ap = (ap >= 0)?ap-1:ap;
+            bp = (bp >= 0)?bp-1:bp;
         }
         if (ca > 0)
-            ret = '1' + ret;
+            ret = ret + '1';
+        for (int i = 0; i < ret.size()/2; i++) {
+            char c = ret[i];
+            ret[i] = ret[ret.size()-1-i];
+            ret[ret.size()-1-i] = c;
+        }
         return ret;
     }
 };

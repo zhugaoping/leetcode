@@ -3,46 +3,18 @@ public:
     bool isInterleave(string s1, string s2, string s3) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (s1.empty())
-            return s2 == s3;
-        if (s2.empty())
-            return s1 == s3;
-        if (s1.size() + s2.size() != s3.size())
+        int size1 = s1.size(), size2 = s2.size(), size3 = s3.size();
+        if ((size1 + size2) != size3)
             return false;
-        int size1 = s1.size(), size2 = s2.size();
-        bool matrix[size1+1][size2+1];
-        matrix[0][0] = true;
-        int i = 1;
-        for (; i <= size1; i++) {
-            if (s1[i-1] == s3[i-1])
-                matrix[i][0] = true;
-            else
-                break;
-        }
-        for (; i <= size1; i++)
-            matrix[i][0] = false;
-        int j = 1;
-        for (; j <= size2; j++) {
-            if (s2[j-1] == s3[j-1])
-                matrix[0][j] = true;
-            else
-                break;
-        }
-        for (; j <= size2; j++)
-            matrix[0][j] = false;
-        for (int i = 1; i <= size1; i++) {
-            for (int j = 1; j <= size2; j++) {
-                if (matrix[i-1][j] && (s1[i-1] == s3[i+j-1])) {
-                    matrix[i][j] = true;
-                    continue;
-                }
-                if (matrix[i][j-1] && (s2[j-1] == s3[i+j-1])) {
-                    matrix[i][j] = true;
-                    continue;
-                }
-                matrix[i][j] = false;
-            }   
-        }
-        return matrix[size1][size2];
+        bool p[size1+1][size2+1];
+        p[0][0] = true;
+        for (int j = 1; j <= size2; j++)
+            p[0][j] = (p[0][j-1] && (s2[j-1] == s3[j-1]));
+        for (int i = 1; i <= size1; i++)
+            p[i][0] = (p[i-1][0] && (s1[i-1] == s3[i-1]));
+        for (int i = 1; i <= size1; i++)
+            for (int j = 1; j <= size2; j++)
+                p[i][j] = (p[i-1][j] && (s1[i-1] == s3[i+j-1]))||(p[i][j-1] && (s2[j-1] == s3[i+j-1]));
+        return p[size1][size2];
     }
 };

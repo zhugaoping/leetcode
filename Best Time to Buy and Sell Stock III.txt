@@ -5,25 +5,21 @@ public:
         // DO NOT write int main() function
         if (prices.size() < 2)
             return 0;
-        int size = prices.size();
-        int l[size];
-        int r[size];
-        int minp = prices[0];
+        int size = prices.size(), l[size], r[size];
+        int miv = prices[0], mav = prices.back();
         l[0] = 0;
         for (int i = 1; i < size; i++) {
-            l[i] = max((prices[i] - minp), l[i-1]);
-            minp = min(prices[i], minp);
+            miv = min(miv, prices[i]);
+            l[i] = max(l[i-1], prices[i] - miv);
         }
         r[size-1] = 0;
-        int maxp = prices[size-1];
         for (int i = size - 2; i >= 0; i--) {
-            r[i] = max((maxp - prices[i]), r[i+1]);
-            maxp = max(prices[i], maxp);    
+            mav = max(mav, prices[i]);
+            r[i] = max(r[i+1], mav - prices[i]);
         }
-        int m = l[size - 1];
-        for (int i = 0; i < size - 2; i++) {
-            m = max(l[i]+r[i+1], m);
-        }
-        return m;
+        int ret = r[0];
+        for (int i = 0; i < size - 1; i++)
+            ret = max(ret, l[i] + r[i+1]);
+        return ret;
     }
 };

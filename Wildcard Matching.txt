@@ -3,38 +3,45 @@ public:
     bool isMatch(const char *s, const char *p) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        const char *str, *pat;
+        if (!s)
+            return !p;
+        if (!p)
+            return !s;
+        if (!*p)
+            return !*s;
+        const char* str = s, *pat = p;
         bool star = false;
-        
-        for (str = s, pat = p; *str != '\0'; ++str, ++pat){
+        for (;*str ;str++, pat++) {
             switch(*pat) {
-                case '?':
+                case '?': {
                     break;
-                case '*':
+                }
+                case '*': {
                     star = true;
-                    s = str, p = pat;
-                    do {
-                        ++p;
-                    } while(*p == '*');
+                    p = ++pat;
+                    while (*p == '*')
+                        p++;
                     if (!*p)
                         return true;
-                    str = s - 1;
+                    s = str;
                     pat = p - 1;
+                    str = s - 1;
                     break;
-                default:
-                    if (*str != *pat) {
+                } default: {
+                    if (*str == *pat)
+                        break;
+                    else {
                         if (!star)
                             return false;
-                        ++s;
+                        s++;
                         str = s - 1;
                         pat = p - 1;
                     }
-                    break;
+                }
             }
         }
-        
         while (*pat == '*')
-            ++pat;
-        return (!*pat);
+            pat++;
+        return !*pat;
     }
 };

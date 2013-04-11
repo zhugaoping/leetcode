@@ -4,37 +4,28 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         vector<vector<int> > rets;
-        int size = num.size();
-        if (size < 4)
+        if (num.size() < 4)
             return rets;
         sort(num.begin(), num.end());
-        for (int i = 0; i < size - 3; i++) {
-            while ((i > 0) && (i < size - 3) && (num[i] == num[i-1]))
-                i++;
-            for (int j = i+1; j < size - 2; j++) {
-                while ((j > i+1) && (j < size - 2) && (num[j] == num[j-1]))
-                    j++;
-                int l = j + 1, u = size - 1, sum = 0;
+        for (size_t i = 0; i < num.size() - 3; i++) {
+            if ((i > 0) && (num[i] == num[i-1]))
+                continue;
+            for (size_t j = i + 1; j < num.size() - 2; j++) {
+                if ((j > i + 1) && (num[j] == num[j-1]))
+                    continue;
+                size_t l = j + 1, u = num.size() - 1;
                 while (l < u) {
-                    sum = num[i] + num[j] + num[l] + num[u];
-                    if (sum > target) {
-                        u--;
-                        while ((l < u) && (num[u] == num[u+1]))
-                            u--;
+                    long long sum = (long long)num[i] + num[j] + num[l] + num[u];
+                    if (sum == target) {
+                        rets.push_back(vector<int> (4, num[i]));
+                        rets.back()[1] = num[j];
+                        rets.back()[2] = num[l];
+                        rets.back()[3] = num[u];
                     }
-                    else {
-                        if (sum == target) {
-                            vector<int> ret;
-                            rets.push_back(ret);
-                            rets.back().push_back(num[i]);
-                            rets.back().push_back(num[j]);
-                            rets.back().push_back(num[l]);
-                            rets.back().push_back(num[u]);
-                        }
-                        l++;
-                        while ((l < u) && (num[l] == num[l-1]))
-                            l++;
-                    }
+                    if (sum < target)
+                        while ((++l < u) && (num[l] == num[l-1]));
+                    else
+                        while ((--u > l) && (num[u] == num[u+1]));
                 }
             }
         }

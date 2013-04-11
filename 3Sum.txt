@@ -4,33 +4,24 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         vector<vector<int> > rets;
-        int size = num.size();
-        if (size < 3)
+        if (num.size() < 3)
             return rets;
         sort(num.begin(), num.end());
-        for (int i = 0; i < size - 2; i++) {
-            while ((i > 0) && (i < (size - 2)) && (num[i] == num[i-1]))
-                i++;
-            int l = i + 1, u = size - 1, sum = 0;
+        for (size_t i = 0; i < num.size() - 2; i++) {
+            if ((i > 0) && (num[i] == num[i-1]))
+                continue;
+            size_t l = i + 1, u = num.size() - 1;
             while (l < u) {
-                sum = num[i] + num[l] + num[u];
-                if (sum > 0) {
-                    u--;
-                    while ((l < u) && (num[u] == num[u+1]))
-                        u--;
+                long long sum = (long long)num[i] + num[l] + num[u];
+                if (sum == 0) {
+                    rets.push_back(vector<int> (3, num[i]));
+                    rets.back()[1] = num[l];
+                    rets.back()[2] = num[u];
                 }
-                else {
-                    if (sum == 0) {
-                        vector<int> ret;
-                        rets.push_back(ret);
-                        rets.back().push_back(num[i]);
-                        rets.back().push_back(num[l]);
-                        rets.back().push_back(num[u]);
-                    }
-                    l++;
-                    while ((l < u) && (num[l] == num[l-1]))
-                        l++;
-                }
+                if (sum < 0)
+                    while ((++l < u) && (num[l] == num[l-1]));
+                else
+                    while ((--u > l) && (num[u] == num[u+1]));
             }
         }
         return rets;

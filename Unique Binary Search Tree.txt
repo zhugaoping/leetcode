@@ -3,14 +3,12 @@ public:
     int numTrees(int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int plans[n+1];
-        plans[0] = 1;
-        plans[1] = 1;
-        for (int i = 2; i <= n; i++) {
-            plans[i] = 0;
+        vector<int> plan(n+1, 1);
+        for (int i = 1; i <= n; i++) {
+            plan[i] = 0;
             for (int j = 0; j <= i - 1; j++)
-                plans[i] += plans[j]*plans[i-1-j];
+                plan[i] += plan[j]*plan[i-1-j];
         }
-        return plans[n];
+        return plan[n];
     }
 };

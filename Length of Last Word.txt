@@ -3,14 +3,13 @@ public:
     int lengthOfLastWord(const char *s) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int size = strlen(s), l = size - 1;
-        while ((l >= 0) && !isalpha(tolower(*(s+l))))
-            l--;
-        if (l < 0)
-            return 0;
-        int u = l;
-        while ((l >= 0) && isalpha(tolower(*(s+l))))
-            l--;
-        return u - l;
+        if (!s)
+    	    return 0;
+        int size = strlen(s), len = 0;
+        const char* t = s + size;
+        while ((--t >= s) && (*t == ' '));
+        while ((t >= s) && (*t-- != ' '))
+            len++;
+        return len;
     }
 };

@@ -3,25 +3,24 @@ public:
     int largestRectangleArea(vector<int> &height) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int ret = 0, size = height.size();
-        if (size > 0) {
-            int l[size], r[size];
-            l[0] = 0, r[size-1] = size-1;
-            for (int i = 1; i < size; i++) {
-                int k = i;
-                while ((k > 0) && (height[i] <= height[k-1]))
-                    k = l[k-1];
-                l[i] = k;
-            }
-            for (int i = size - 2; i >= 0; i--) {
-                int k = i;
-                while ((k < size-1) && (height[i] <= height[k+1]))
-                    k = r[k+1];
-                r[i] = k;
-            }
-            for (int i = 0; i < size; i++)
-                ret = max(ret, height[i]*(r[i] + 1 - l[i]));
+        if (height.size() == 0)
+            return 0;
+        int size = height.size(), l[size], r[size], ret = 0;
+        l[0] = 0, r[size-1] = size-1;
+        for (int i = 1; i < size; i++) {
+            int k = i;
+            while ((k > 0) && (height[i] <= height[k-1]))
+                k = l[k-1];
+            l[i] = k;
         }
+        for (int i = size - 2; i >= 0; i--) {
+            int k = i;
+            while ((k < size - 1) && (height[i] <= height[k+1]))
+                k = r[k+1];
+            r[i] = k;
+        }
+        for (int i = 0; i < size; i++)
+            ret = max(ret, height[i]*(r[i] - l[i] + 1));
         return ret;
     }
 };

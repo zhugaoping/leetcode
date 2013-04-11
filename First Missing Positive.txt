@@ -1,22 +1,17 @@
 class Solution {
 public:
-    //leetcode --> Find the first missing positive
-
-int firstMissingPositive(int A[], int n)
-{
-    for (int i = 0; i < n; i++)
-	{
-		if (A[i] == i+1) continue;
-
-		while (A[i] >= 1 && A[i] <= n && A[i] != i+1
-			&& A[A[i]-1] != A[i])
-			swap(A[i], A[A[i]-1]);
-	}
-
-	for (int i = 0; i < n; i++)
-		if (A[i] != i+1) return i+1;
-
-	return n+1;
-}
-
+    int firstMissingPositive(int A[], int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        for (int i = 0; i < n; i++)
+            while ((A[i] > 0) && (A[i] <= n) && (A[A[i]-1] != A[i])) {
+                int t = A[A[i]-1];
+                A[A[i]-1] = A[i];
+                A[i] = t;
+            }
+        int j = 0;
+        while ((j < n) && (A[j] == j+1))
+            j++;
+        return j+1;
+    }
 };

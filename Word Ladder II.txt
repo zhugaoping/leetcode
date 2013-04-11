@@ -1,0 +1,61 @@
+class Solution {
+public:
+    vector<vector<string>> findLadders(string start, string end, unordered_set<string> &dict) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<vector<string>> rets;
+        unordered_map<string, int> state;
+        unordered_map<string, vector<string>> paths;
+        state.insert(make_pair(start, 0));
+        int len = 1;
+        list<string> inner, outer;
+        inner.push_back(start);
+        while (!inner.empty()) {
+            outer.clear();
+            bool flag = false;
+            while (!inner.empty()) {
+                string s = inner.front();
+                inner.erase(inner.begin());
+                for (int i = 0; i < s.size(); i++) {
+                    string c = s;
+                    for (int j = 0; j < 26; j++) {
+                        c[i] = 'a' + (char)j;
+                        if (c[i] == s[i])
+                            continue;
+                        if (c == end) {
+                            flag = true;
+                            vector<string> ans(1, end);
+                            solve(rets, ans, s, start, paths);
+                        } else {
+                            if (dict.find(c) == dict.end())
+                                continue;
+                            if (state.find(c) == state.end()) {
+                                state.insert(make_pair(c, len));
+                                paths[c].push_back(s);
+                                outer.push_back(c);
+                            } else if (len == state[c])
+                                paths[c].push_back(s);
+                            
+                        }
+                    }
+                }
+            }
+            if (flag)
+                break;
+            len++;
+            inner = outer;
+        }
+        return rets;
+    }
+    void solve(vector<vector<string>> &r, vector<string>& a, string& c, string& s, unordered_map<string, vector<string> > &p) {
+        a.insert(a.begin(), c);
+        if (c == s) {
+            r.push_back(a);
+        } else {
+            vector<string>& v = p[c];
+            for (int i = 0; i < v.size(); i++)
+                solve(r, a, v[i], s, p);
+        }
+        a.erase(a.begin());
+    }
+};

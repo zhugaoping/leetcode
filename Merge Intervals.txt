@@ -7,38 +7,26 @@
  *     Interval(int s, int e) : start(s), end(e) {}
  * };
  */
-
+struct myclass{
+    bool operator()(const Interval& a, const Interval& b) {
+        return a.start < b.start;
+    }
+} myobj;
 class Solution {
 public:
-    struct my{
-        bool operator()(const Interval& a, const Interval& b) {
-            return a.start < b.start;
-        }
-    } myo;
     vector<Interval> merge(vector<Interval> &intervals) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<Interval> r;
-        vector<Interval>& s = intervals;
-        if (s.size() == 0)
-            return r;
-        sort(s.begin(), s.end(), myo);
-        r.push_back(s.front());
-        s.erase(s.begin());
-        while (s.size() > 0) {
-            Interval& l = r.back();
-            Interval& t = s.front();
-            if (l.end < t.start) {
-                r.push_back(t);
-                s.erase(s.begin());
-            }
-            else {
-                l.end = (l.end > t.end)?l.end:t.end;
-                s.erase(s.begin());
-            }
+        sort(intervals.begin(), intervals.end(), myobj);
+        vector<Interval> ret;
+        while (!intervals.empty()) {
+            vector<Interval>::iterator it = intervals.begin();
+            if (ret.empty() || ((*it).start > ret.back().end))
+                ret.push_back(*it);    
+            else
+                ret.back().end = max(ret.back().end, (*it).end);
+            intervals.erase(it);
         }
-        return r;
-
-        
+        return ret;
     }
 };

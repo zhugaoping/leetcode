@@ -12,43 +12,25 @@ public:
     vector<vector<int> > pathSum(TreeNode *root, int sum) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > rs;
-        vector<int> r;
-        if (root == NULL)
-            return rs;
-        else
-            test(root, sum, rs, r);
-        return rs;
-        
-        
+        vector<vector<int>> rets;
+        vector<int> ret;
+        if (root)
+            solve(rets, ret, root, sum);
+        return rets;
     }
-    void test(TreeNode *root, int sum, vector<vector<int> >& rs, vector<int>& r) {
-        if ((root->left == NULL) && (root->right == NULL)) {
-            if (root->val == sum) {
-                r.push_back(root->val);
+    void solve(vector<vector<int>> &rs, vector<int> &r, TreeNode* n, int rem) {
+        if (!n->left && !n->right) {
+            if (rem == n->val) {
                 rs.push_back(r);
-                r.pop_back();
+                rs.back().push_back(n->val);
             }
-        }
-        if (root->left != NULL) {
-            r.push_back(root->val);
-            test(root->left, sum - root->val, rs, r);
-            r.pop_back();
-        }
-        if (root->right != NULL) {
-            r.push_back(root->val);
-            test(root->right, sum - root->val, rs, r);
+        } else {
+            r.push_back(n->val);
+            if (n->left)
+                solve(rs, r, n->left, rem - n->val);
+            if (n->right)
+                solve(rs, r, n->right, rem - n->val);
             r.pop_back();
         }
     }
 };
-
-/**
- * Definition for binary tree
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */

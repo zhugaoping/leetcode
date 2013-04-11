@@ -3,39 +3,29 @@ public:
     bool isScramble(string s1, string s2) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
+        
         if (s1.size() != s2.size())
             return false;
-        int size = s1.size();
-        bool matrix[size][size][size];
+        int size = s1.size(), plan[size][size][size];
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
-                matrix[0][i][j] = (s1[i] == s2[j]);
-        for (int n = 1; n < size; n++) {
-            int len = n + 1;
-            for (int i = 0; i <= size - len; i++)
-                for (int j = 0; j <= size - len; j++) {
-                    matrix[n][i][j] = false;
+                plan[0][i][j] = (s1[i] == s2[j])?true:false;
+        for (int l = 1; l < size; l++) {
+            int len = l + 1;
+            for (int i = 0; i < size - l; i++)
+                for (int j = 0; j < size - l; j++)
                     for (int k = 1; k < len; k++) {
-                        if (matrix[k-1][i][j] && matrix[len-k-1][i+k][j+k]) {
-                            matrix[n][i][j] = true;
+                        plan[l][i][j] = false;
+                        if (plan[k-1][i][j] && plan[len-k-1][i+k][j+k]) {
+                            plan[l][i][j] = true;
                             break;
                         }
-                        if (matrix[len-k-1][i][j] && matrix[k-1][i+len-k][j+len-k]) {
-                            matrix[n][i][j] = true;
+                        if (plan[k-1][i][j+len-k] && plan[len-k-1][i+k][j]) {
+                            plan[l][i][j] = true;
                             break;
                         }
-                        if (matrix[k-1][i][j+len-k] && matrix[len-k-1][i+k][j]) {
-                            matrix[n][i][j] = true;
-                            break;
-                        }
-                        if (matrix[k-1][i+len-k][j] && matrix[len-k-1][i][j+k]) {
-                            matrix[n][i][j] = true;
-                            break;
-                        } 
                     }
-                }
         }
-        return matrix[size-1][0][0];
+        return plan[size-1][0][0];
     }
-    
 };

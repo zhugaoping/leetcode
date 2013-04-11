@@ -12,15 +12,10 @@ public:
     bool isSameTree(TreeNode *p, TreeNode *q) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (!p)
-            return !q;
-        if (!q)
-            return !p;
-        if (p->val != q->val)
+        if ((p && !q) || (!p && q))
             return false;
-        else if (!isSameTree(p->left, q->left) || !isSameTree(p->right, q->right))
-            return false;
-        else
+        if (!p && !q)
             return true;
+        return ((p->val == q->val) && isSameTree(p->left, q->left) && isSameTree(p->right, q->right));  
     }
 };

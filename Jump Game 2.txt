@@ -3,15 +3,16 @@ public:
     int jump(int A[], int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int oldLast = 0, newLast = INT_MIN, step = 0, i = 0;
-        while (i <= min(n-1, oldLast)) {
-            newLast = max(newLast, i + A[i]);
-            if (i == oldLast) {
-                step += (i == n - 1)?0:1;
-                oldLast = newLast;
+        int last = 0, nlast = 0, step = 0;
+        for (int i = 0; (i < n) && (i <= last); i++) {
+            if (i == n - 1)
+                break;
+            nlast = max(nlast, i + A[i]);
+            if (i == last) {
+                last = nlast;
+                step++;
             }
-            i++;
         }
-        return step;
+        return -1;
     }
 };

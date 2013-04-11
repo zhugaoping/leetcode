@@ -3,54 +3,35 @@ public:
     vector<string> fullJustify(vector<string> &words, int L) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<string> rs;
-        int size = words.size();
-        if (size == 0) {
-            rs.push_back("");
-            return rs;
-        }
-        if (L <= 0) {
-            rs.push_back("");
-            return rs;
-        }
-        int p = 0;
-        while (p < size) {
-            int num = 0;
-            string r = "";
-            vector<string> b;
-            while ((p < size) && (num + b.size() + words[p].size() <= L)) {
-                b.push_back(words[p++]);
-                num += b.back().size();
-            }
-            if (b.size() == 1) {
-                r += b[0];
-                r += string(L - b[0].size(), ' ');
-                rs.push_back(r);
-            }
-            else {
-                if (p != size) {
-                    int space = L - num;
-                    int width = space/(b.size() - 1);
-                    int spare = space%(b.size() - 1);
-                    r = b[0];
-                    for (int i = 1; i < b.size(); i++) {
-                        r += (i <= spare)?string(width+1, ' '):string(width, ' ');
-                        r += b[i];
-                    }
-                }
-                else {
-                    r = b[0];
-                    for (int i = 1; i < b.size(); i++) {
-                        r += " ";
-                        r += b[i];
-                    }
-                    if (r.size() < L) {
-                        r += string(L-r.size(), ' ');
-                    }
-                }
-                rs.push_back(r);
+        vector<string> rets;
+        int p = 0, l = -1, len = 0, num = 0;
+        while (p < words.size()) {
+            l = (l == -1)?p:l;
+            if (len + words[p].size() + num <= L) {
+                len += words[p++].size();
+                num++;  
+            } else {
+                string ret;
+                if (num > 1) {
+                    int snum = L - len, base = snum/(num-1), full = snum%(num-1);
+                    for (int i = l; i < p - 1; i++)
+                        ret += words[i]+((full-- > 0)?string(base+1, ' '):string(base, ' '));
+                    ret += words[p-1];
+                } else
+                    ret = words[l] + string(L-words[l].size(), ' ');
+                rets.push_back(ret);
+                l = -1;
+                len = 0;
+                num = 0;
             }
         }
-        return rs;
+        if (l != -1) {
+            string ret;
+            for (int i = l; i < words.size(); i++)
+                ret += (i == words.size()-1)?words[i]:words[i] + ' ';
+            ret += string(L-ret.size(), ' ');
+            rets.push_back(ret);
+        }
+        return rets;
     }
 };

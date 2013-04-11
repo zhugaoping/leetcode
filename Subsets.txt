@@ -3,20 +3,20 @@ public:
     vector<vector<int> > subsets(vector<int> &S) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > rets;
-        sort(S.begin(), S.end());
-        int size = S.size();
-        if (size == 0)
+        vector<vector<int>> rets;
+        if (S.empty())
             return rets;
-        for (int i = 0; i < pow(2, size); i++) {
-            vector<int> ret;
-            rets.push_back(ret);
-            int p = 0, n = i;
+        sort(S.begin(), S.end());
+        int l = S.size();
+        for (double i = 0; i < pow(2, l); i++) {
+            rets.push_back(vector<int>(0));
+            int p = 0;
+            double n = i;
             while (n > 0) {
-                if (n & 1)
+                if (ceil(n/2) != n/2)
                     rets.back().push_back(S[p]);
+                n = floor(n/2);
                 p++;
-                n >>= 1;
             }
         }
         return rets;

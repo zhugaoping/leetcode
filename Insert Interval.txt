@@ -12,30 +12,22 @@ public:
     vector<Interval> insert(vector<Interval> &intervals, Interval newInterval) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<Interval> results;
-        Interval n = newInterval;
-        if (intervals.size() == 0) {
-            results.push_back(newInterval);
-            return results;
-        }
-        int p = 0;
-        while (p < intervals.size()) {
-            Interval& c = intervals[p];
-            if (n.start > c.end)
-                results.push_back(c);
-            else if (n.end < c.start) {
+        vector<Interval> rets;
+        vector<Interval>::iterator it = intervals.begin();
+        while (it != intervals.end()) {
+            if ((*it).end < newInterval.start)
+                rets.push_back(*it);
+            else if ((*it).start > newInterval.end)
                 break;
-            }
             else {
-                n.start = (n.start < c.start)?n.start:c.start;
-                n.end = (n.end > c.end)?n.end:c.end;
+                newInterval.start = min(newInterval.start, (*it).start);
+                newInterval.end = max(newInterval.end, (*it).end);
             }
-            p++;
+            it++;
         }
-        results.push_back(n);
-        while (p < intervals.size()) {
-            results.push_back(intervals[p++]);
-        }
-        return results;
+        rets.push_back(newInterval);
+        while (it != intervals.end())
+            rets.push_back(*it++);
+        return rets;
     }
 };

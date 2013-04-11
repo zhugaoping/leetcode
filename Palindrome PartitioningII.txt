@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minCut(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        if (s.size() < 2)
+            return 0;
+        string c = "#";
+        for (int i = 0; i < s.size(); i++)
+            c = c + s[i] + '#';
+        vector<int> r(c.size(), 0);
+        for (int i = 0; i < c.size(); i++) {
+            int p = 1;
+            while ((i-p >= 0) && (i+p < c.size()) && (c[i+p] == c[i-p]))
+                p++;
+            r[i] = p - 1;
+        }
+        int plan[s.size()+1];
+        plan[0] = -1;
+        for (int i = 1; i <= s.size(); i++) {
+            plan[i] = plan[i-1]+1;
+            for (int j = 0; j < i - 1; j++)
+                if (r[i+j] >= (i - j))
+                    plan[i] = min(plan[i], plan[j]+1);
+        }
+        return plan[s.size()];
+    }
+};

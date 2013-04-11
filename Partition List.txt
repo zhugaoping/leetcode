@@ -11,26 +11,23 @@ public:
     ListNode *partition(ListNode *head, int x) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        ListNode* prev = new ListNode(0);
-        ListNode* succ = new ListNode(0);
-        ListNode *pt = prev, *st = succ;
-        while (head != NULL) {
-            ListNode* temp = head;
+        ListNode *l1 = new ListNode(0), *t1 = l1;
+        ListNode *l2 = new ListNode(0), *t2 = l2;
+        while (head) {
+            if (head->val < x) {
+                t1->next = head;
+                t1 = t1->next;
+            } else {
+                t2->next = head;
+                t2 = t2->next;
+            }
             head = head->next;
-            if (temp->val < x) {
-                pt->next = temp;
-                pt = pt->next;
-            }
-            else {
-                st->next = temp;
-                st = st->next;
-            }
         }
-        pt->next = succ->next;
-        st->next = NULL;
-        delete succ;
-        head = prev->next;
-        delete prev;
+        t2->next = NULL;
+        t1->next = l2->next;
+        delete l2;
+        head = l1->next;
+        delete l1;
         return head;
     }
 };

@@ -3,20 +3,14 @@ public:
     double pow(double x, int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
+        bool pos = !(n < 0);
+        unsigned p = pos?n:-(double)n;
         double ret = 1;
-        unsigned pow;
-        bool neg = false;
-        if (n < 0) {
-            neg = true;
-            pow = (unsigned)((double)-1 * (double)n);
-        }
-        else
-            pow = n;
-        while (pow > 0) {
-            ret = (pow & 1)?ret*x:ret;
+        while (p > 0) {
+            ret = (p & 1)?x*ret:ret;
             x *= x;
-            pow /= 2;
+            p >>= 1;
         }
-        return (neg)?1/ret:ret;
+        return pos?ret:1/ret;   
     }
 };

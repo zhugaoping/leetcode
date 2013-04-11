@@ -3,54 +3,28 @@ public:
     bool search(int A[], int n, int target) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (n == 0) return false;
-        
-        int l = 0;
-        int u = n-1;
-        bool result = false;
-        while(l <= u)
-        {
-            int mid = l+(u-l)/2;
-            
-            if (A[mid] == target)
+        int l = 0, u = n - 1;
+        while (l <= u) {
+            int mid = (l+u)/2;
+            if (target == A[mid])
                 return true;
-            else if (A[mid] > A[l])
-            {
-                if (A[l] <= target && target < A[mid])
-                {
-                    u = mid - 1;
-                }
+            else if (A[mid] > A[l]) {
+                if ((target >= A[l]) && (target < A[mid]))
+                    u = mid-1;
                 else
-                {
-                    l = mid + 1;
-                }
-            }
-            else if (A[mid] < A[l])
-            {
-                if (A[u] >= target && target > A[mid])
-                {
-                    l = mid + 1;
-                }
+                    l = mid+1;
+            } else if (A[mid] < A[l]) {
+                if ((target > A[mid]) && (target <= A[u]))
+                    l = mid+1;
                 else
-                {
-                    u = mid - 1;
-                }
-            }
-            else
-            {
-                if (A[mid] != A[u])
-                {
-                    l = mid + 1;
-                }
+                    u = mid-1;
+            } else {
+                if (A[l] != A[u])
+                    l = mid+1;
                 else
-                {
-                    result = search(A+l, mid-l,target);
-                    if (!result)
-                        result = search(A+mid+1, u-mid ,target);
-                    break;
-                }
+                    return (search(A+l, mid-l, target) || search(A+mid+1, u - mid,target));
             }
         }
-        return result;
+        return false;
     }
 };

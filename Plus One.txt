@@ -3,11 +3,12 @@ public:
     vector<int> plusOne(vector<int> &digits) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int i;
-        for (i = digits.size() - 1; i >= 0; i--) {
-            if (++digits[i] >= 10)
-                digits[i] %= 10;
-            else
+        if (digits.empty())
+            return vector<int>(0);
+        int i = digits.size() - 1;
+        for (; i >= 0; i--) {
+            digits[i] = (digits[i]+1)%10;
+            if (digits[i] != 0)
                 break;
         }
         if (i == -1)

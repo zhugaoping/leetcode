@@ -99,3 +99,48 @@ public:
         }
     }//end function
 };
+
+class Solution {
+public:
+    void solveSudoku(vector<vector<char> > &board) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<pair<int, int>> queue;
+        int nrows = board.size(), ncols = board.size();
+        for (int i = 0; i < nrows; i++)
+            for (int j = 0; j < ncols; j++)
+                if (board[i][j] == '.')
+                    queue.push_back(make_pair(i, j));
+        solve(board, queue);
+    }
+    void solve(vector<vector<char>>& b, vector<pair<int, int>>& q) {
+        int p = 0;
+        while ((p >= 0) && (p < q.size())) {
+            int i = q[p].first, j = q[p].second;
+            if (b[i][j] == '9') {
+                b[i][j] = '.';
+                p--;
+            } else {
+                b[i][j] = (b[i][j] == '.')?'1':b[i][j]+(char)1;
+                if (check(i, j, b))
+                    p++;
+            }
+        }  
+    }
+    bool check(int& i, int& j, vector<vector<char>>& b) {
+        const int n = b.size();
+        for (int k = 0; k < n; k++)
+            if ((k != i) && (b[k][j] != '.') && (b[k][j] == b[i][j]))
+                return false;
+        vector<char> &row = b[i];
+        for (int k = 0; k < n; k++)
+            if ((k != j) && (row[k] != '.') && (row[k] == b[i][j])) 
+                return false;
+        int r = i/3*3, c = j/3*3;
+        for (int k = r; k < r + 3; k++)
+            for (int l = c; l < c + 3; l++)
+            if (((k != i) || (l != j)) && (b[k][l] != '.') && (b[k][l] == b[i][j]))
+                return false;
+        return true;
+    }
+};

@@ -12,31 +12,38 @@ public:
     vector<vector<int> > zigzagLevelOrder(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > rets;
+        vector<vector<int>> rets;
         if (root == NULL)
             return rets;
-        vector<TreeNode*> inner, outer;
-        bool left = true;
-        inner.push_back(root);
-        while (!inner.empty()) {
-            outer.clear();
-            vector<int> ret;
-            rets.push_back(ret);
-            while (inner.size() > 0) {
-                TreeNode* cur = *inner.begin();
-                inner.erase(inner.begin());
-                if (left)
-                    rets.back().push_back(cur->val);
-                else
-                    rets.back().insert(rets.back().begin(), cur->val);
-                if (cur->left)
-                    outer.push_back(cur->left);
-                if (cur->right)
-                    outer.push_back(cur->right);
+        list<TreeNode*>* inner = new list<TreeNode*>, *outer;
+        bool reverse = false;
+        inner->push_back(root);
+        while(!inner->empty()) {
+            outer = new list<TreeNode*>;
+            rets.push_back(vector<int>(0));
+            while(!inner->empty()) {
+                TreeNode* node = inner->front();
+                inner->pop_front();
+                rets.back().push_back(node->val);
+                if (node->left)
+                    outer->push_back(node->left);
+                if (node->right)
+                    outer->push_back(node->right);
             }
+            if (reverse) {
+                size_t size = rets.back().size();
+                for (int i = 0; i < size/2; i++) {
+                    int t = rets.back()[i];
+                    rets.back()[i] = rets.back()[size-1-i];
+                    rets.back()[size-1-i] = t;
+                }
+            }
+            reverse = !reverse;
+            delete inner;
             inner = outer;
-            left = !left;
         }
-        return rets;
+        delete inner;
+        return rets;     
+        
     }
 };

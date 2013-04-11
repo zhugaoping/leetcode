@@ -12,25 +12,25 @@ public:
     vector<TreeNode *> generateTrees(int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        return buildTrees(1, n);
+        return solve(1, n);
     }
-    vector<TreeNode*> buildTrees(int s, int e) {
-        vector<TreeNode* > ret;
-        if (s > e) {
-            ret.push_back(NULL);
-            return ret;
+    vector<TreeNode*> solve(int l, int u) {
+        vector<TreeNode*> rets;
+        if (l > u) 
+            rets.push_back(NULL);
+        else {
+            for (int i = l; i <= u; i++) {
+                vector<TreeNode*> lrets = solve(l, i-1);
+                vector<TreeNode*> rrets = solve(i+1, u);
+                for (int m = 0; m < lrets.size(); m++)
+                    for (int n = 0; n < rrets.size(); n++) {
+                        TreeNode* node = new TreeNode(i);
+                        node->left = lrets[m];
+                        node->right = rrets[n];
+                        rets.push_back(node);
+                    }
+            }
         }
-        for (int i = s; i <= e; i++) {
-            vector<TreeNode*> l = buildTrees(s, i-1);
-            vector<TreeNode*> r = buildTrees(i+1, e);
-            for (int k = 0; k < l.size(); k++)
-                for (int j = 0; j < r.size(); j++) {
-                    TreeNode* root = new TreeNode(i);
-                    root->left = l[k];
-                    root->right = r[j];
-                    ret.push_back(root);
-                }
-        }
-        return ret;
+        return rets;
     }
 };

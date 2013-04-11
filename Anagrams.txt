@@ -3,28 +3,19 @@ public:
     vector<string> anagrams(vector<string> &strs) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<string> anagrams;
-        map<string, vector<string> > maps;
-        for (int i = 0; i < strs.size(); i++)
-            maps[sorts(strs[i])].push_back(strs[i]);
-        map<string,vector<string> >::iterator it = maps.begin();
+        vector<string> rets;
+        unordered_map<string, vector<string>> maps;
+        for (size_t i = 0; i < strs.size(); i++) {
+            string r = strs[i];
+            sort(r.begin(), r.end());
+            maps[r].push_back(strs[i]);
+        }
+        unordered_map<string, vector<string>>::iterator it = maps.begin();
         while (it != maps.end()) {
-            if (it->second.size() > 1) {
-                for (int i = 0; i < it->second.size(); i++)
-                    anagrams.push_back((it->second)[i]);
-            }
+            if (it->second.size() > 1)
+                rets.insert(rets.end(), it->second.begin(), it->second.end());
             it++;
         }
-        return anagrams;
-    }
-    string sorts(string& s) {
-        vector<char> r;
-        for (int i = 0; i < s.size(); i++)
-            r.push_back(s[i]);
-        sort(r.begin(), r.end());
-        string ret;
-        for (int i = 0; i < r.size(); i++)
-            ret+= r[i];
-        return ret;
+        return rets;
     }
 };

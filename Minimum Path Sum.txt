@@ -3,25 +3,19 @@ public:
     int minPathSum(vector<vector<int> > &grid) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (grid.size() == 0)
+        int nrows = grid.size();
+        if (!nrows)
             return 0;
-        if (grid[0].size() == 0)
+        int ncols = grid[0].size();
+        if (!ncols)
             return 0;
-        vector<int> path(grid[0]);
-        int size = path.size();
-        for (int i = 1; i < size; i++) {
-            path[i] = path[i-1] + path[i];
-        }
-        int k = 1;
-        while (k < grid.size()) {
-            path[0] += grid[k][0];
-            for (int j = 1; j < size; j++) {
-                path[j] = ((path[j] < path[j-1])?path[j]:path[j-1]) + grid[k][j];
-            }
-            k++;
-        }
-        return path[size - 1];
-            
-        
+        for (int j = 1; j < ncols; j++)
+            grid[0][j] = grid[0][j-1] + grid[0][j];
+        for (int i = 1; i < nrows; i++)
+            grid[i][0] = grid[i-1][0] + grid[i][0];
+        for (int i = 1; i < nrows; i++)
+            for (int j = 1; j < ncols; j++)
+                grid[i][j] = min(grid[i-1][j], grid[i][j-1]) + grid[i][j];
+        return grid[nrows-1][ncols-1];
     }
 };

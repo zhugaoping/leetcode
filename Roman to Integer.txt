@@ -3,22 +3,16 @@ public:
     int romanToInt(string s) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        int value[255], ret = 0;
-        value['I'] = 1;
-        value['V'] = 5;
-        value['X'] = 10;
-        value['L'] = 50;
-        value['C'] = 100;
-        value['D'] = 500;
-        value['M'] = 1000;
-        int p = 0;
-        while (p < s.size()) {
-            if ((p + 1 < s.size()) && (value[s[p]] < value[s[p+1]]))
-                ret -= value[s[p]];
-            else
-                ret += value[s[p]];
-            p++;
-        }
+        int maps[255], p = 0, ret = 0;
+        maps['I'] = 1;
+        maps['V'] = 5;
+        maps['X'] = 10;
+        maps['L'] = 50;
+        maps['C'] = 100;
+        maps['D'] = 500;
+        maps['M'] = 1000;
+        while (p < s.size())
+            ret += ((p + 1 < s.size()) && (maps[s[p]] < maps[s[p+1]]))?-maps[s[p++]]:maps[s[p++]];
         return ret;
     }
 };

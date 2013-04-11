@@ -11,31 +11,26 @@ public:
     ListNode *reverseKGroup(ListNode *head, int k) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        ListNode* root = new ListNode(0);
+        ListNode* root = new ListNode(0), *prev = root, *tail = root;
         root->next = head;
-        ListNode* prev = root;
         while (prev) {
-            int p = k;
-            ListNode* tail = prev;
-            while (tail && p--)
-                tail = tail->next;
-            if (tail == NULL)
+            int kp = k + 1;
+            while (kp && tail) {tail = tail->next; kp--;}
+            if (kp > 0)
                 break;
-            ListNode* newp = prev->next;
-            ListNode* next = tail->next;
-            ListNode* temp = prev->next;
-            tail->next = NULL;
-            while (temp) {
-                prev->next = temp->next;
-                temp->next = next;
-                next = temp;
+            ListNode* mark = tail, *temp, *newp = prev->next;
+            while (prev->next != mark) {
                 temp = prev->next;
+                prev->next = temp->next;
+                temp->next = tail;
+                tail = temp;
             }
-            prev->next = next;
+            prev->next = tail;
             prev = newp;
+            tail = newp;
         }
         head = root->next;
         delete root;
-        return head;  
+        return head;
     }
 };

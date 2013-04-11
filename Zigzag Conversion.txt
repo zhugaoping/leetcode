@@ -2,18 +2,17 @@ class Solution {
 public:
     string convert(string s, int nRows) {
         // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        if (nRows == 1)
+        // DO NOT write int main() function    
+        vector<string> r(nRows, "");
+        if (nRows <= 1)
             return s;
-        string rows[nRows];
-        int zigsize = nRows*2 - 2, p = 0;
-        while (p < s.size()) {
-            rows[nRows - 1 - abs((p%zigsize) - nRows + 1)] += s[p];
-            p++;
+        for (int i = 0; i < s.size(); i++) {
+            int l = i%(2*nRows-2);
+            r[nRows - 1 - abs(nRows-1-l)] += s[i];
         }
         string ret;
         for (int i = 0; i < nRows; i++)
-            ret = ret + rows[i];
+            ret += r[i];
         return ret;
     }
 };

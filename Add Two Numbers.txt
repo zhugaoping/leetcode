@@ -15,41 +15,20 @@ public:
             return l2;
         if (!l2)
             return l1;
-        ListNode* head = new ListNode(0), *tail = head;
-        int sum = 0, car = 0;
-        while (l1 && l2) {
-            sum = l1->val + l2->val + car;
-            ListNode* node = new ListNode(sum%10);
-            car = sum/10;
-            tail->next = node;
+        ListNode *head = new ListNode(0), *tail = head;
+        int c = 0;
+        while (l1 || l2) {
+            int s = (l1?l1->val:0) + (l2?l2->val:0) + c;
+            tail->next = new ListNode(s%10);
             tail = tail->next;
-            l1 = l1->next;
-            l2 = l2->next;
+            c = s/10;
+            l1 = l1?l1->next:l1;
+            l2 = l2?l2->next:l2;
         }
-        while (!l2 && l1) {
-            sum = l1->val + car;
-            ListNode* node = new ListNode(sum%10);
-            car = sum/10;
-            tail->next = node;
-            tail = tail->next;
-            l1 = l1->next;
-        }
-        while (!l1 && l2) {
-            sum = l2->val + car;
-            ListNode* node = new ListNode(sum%10);
-            car = sum/10;
-            tail->next = node;
-            tail = tail->next;
-            l2 = l2->next;
-        }
-        if (car > 0) {
-            ListNode* node = new ListNode(car);
-            tail->next = node;
-            tail = tail->next;
-        }
-        ListNode* temp = head;
-        head = head->next;
-        delete temp;
-        return head;
+        if (c > 0)
+            tail->next = new ListNode(1);
+        tail = head->next;
+        delete head;
+        return tail;
     }
 };

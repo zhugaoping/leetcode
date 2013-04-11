@@ -12,25 +12,15 @@ public:
     bool isSymmetric(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (root == NULL)
-            return true;
-        else
-            return sym(root->left, root->right);
+        return (!root)?true:solve(root->left, root->right);
     }
-    bool sym(TreeNode* l, TreeNode* r) {
-        if ((!l) && (!r))
-            return true;
-        else if ((!r && l) || (!l && r))
+    bool solve(TreeNode* l, TreeNode* r) {
+        if ((!l && r) || (l && !r))
             return false;
-        else {
-            if (!sym(l->left, r->right) || !sym(l->right, r->left))
-                return false;
-            if (l->val != r->val)
-                return false;
-            else
-                return true;
-        }
-        
+        if (!l && !r)
+            return true;
+        if (l->val != r->val)
+            return false;
+        return solve(l->left, r->right) && solve(l->right, r->left);
     }
-    
 };

@@ -3,23 +3,19 @@ public:
     int lengthOfLongestSubstring(string s) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (s.size() <= 1)
-            return s.size();
-        int n = 256, b = 0, mav = 1;
-        bool c[n];
-        memset(c, 0x00, sizeof(bool)*n);
-        c[s[b]] = true;
-        for (int i = 1; i < s.size(); i++) {
-            if (!c[s[i]]) {
-                c[s[i]] = true;
-                mav = max(mav, i - b + 1);
-            }
-            else {
-                while (s[b] != s[i])
-                    c[s[b++]] = false;
-                b++;
-            }
-        }
-        return mav;
+        int mav = 0, l = 0, i = 0;
+        vector<bool> use(255, false);
+	    while (i < s.size()) {
+		    if (!use[s[i]]) {
+			    use[s[i]] = true;
+			    mav = max(mav, i - l + 1);
+	        } else {
+			    while (s[l] != s[i])
+				    use[s[l++]] = false;
+	        	l++;
+		    }
+		    i++;
+	    }
+	    return mav;
     }
 };

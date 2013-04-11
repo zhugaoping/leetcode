@@ -1,46 +1,39 @@
-class A {
-            public:
-        int l;
-        int r;
+struct entry{
+        int l, r;
         string s;
-        A():l(0), r(0) {}
-        A(const A& a):l(a.l), r(a.r), s(a.s) {}
+        entry():l(0), r(0){}
+        entry(const entry& e):l(e.l), r(e.r), s(e.s){}
 };
-        
 class Solution {
 public:
     vector<string> generateParenthesis(int n) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<string> results;
-        vector<A>* previous = new vector<A>;
-        vector<A>* current = new vector<A>;
-        A a;
-        previous->push_back(a);
+        vector<entry> *inner = new vector<entry>, *outer;
+        inner->push_back(entry());
         for (int i = 0; i < 2*n; i++) {
-            current->clear();
-            for (int j = 0; j < previous->size(); j++) {
-                A& a = (*previous)[j];
-                if (a.l < n) {
-                    A c(a);
-                    c.l++;
-                    c.s += "(";
-                    current->push_back(c);
+            outer = new vector<entry>;
+            while(!inner->empty()) {
+                entry e = inner->back();
+                inner->pop_back();
+                if (e.l < n) {
+                    outer->push_back(e);
+                    outer->back().l++;
+                    outer->back().s += '(';
                 }
-                if (a.r < a.l) {
-                    A c(a);
-                    c.r++;
-                    c.s += ")";
-                    current->push_back(c);
+                if (e.l > e.r) {
+                    outer->push_back(e);
+                    outer->back().r++;
+                    outer->back().s += ')';
                 }
             }
-            vector<A>* temp = previous;
-            previous = current;
-            current = temp;
+            delete inner;
+            inner = outer;
         }
-        for (int i = 0; i < previous->size(); i++)
-            results.push_back((*previous)[i].s);
-        return results;
-        
+        vector<string> rets;
+        for (size_t i = 0; i < inner->size(); i++)
+            rets.push_back((*inner)[i].s);
+        delete inner;
+        return rets;
     }
 };

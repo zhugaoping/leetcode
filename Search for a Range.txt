@@ -3,49 +3,40 @@ public:
     vector<int> searchRange(int A[], int n, int target) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<int> ret;
-        ret.push_back(-1);
-        ret.push_back(-1);
-        if (n == 0) 
+        vector<int> ret(2, -1);
+        if ((n == 0) || (target < A[0]) || (target > A[n-1]))
             return ret;
-        if (target < A[0])
-            return ret;
-        if (target > A[n-1])
-            return ret;
-        ret[0] = findHead(A, n, target);
-        ret[1] = findTail(A, n, target);
+        ret[0] = findFirst(A, n, target);
+        ret[1] = findLast(A, n, target);
         return ret;
-        
     }
-    int findHead(int A[], int n, int target) {
-        int s = 0;
-        int e = n - 1;
-        while (s <= e) {
-            int p = (s+e)/2;
-            if (A[p] > target)
-                e = p - 1;
-            else if (A[p] < target)
-                s = p + 1;
-            else if ((p == 0) || (A[p-1] < A[p]))
-                return p;
+    int findFirst(int A[], int n, int target) {
+        int l = 0, u = n - 1, mid;
+        while (l <= u) {
+            mid = (l+u)/2;
+            if (target == A[mid]) {
+                if ((mid == 0) || (A[mid-1] != A[mid]))
+                    return mid;
+                u = mid - 1;
+            } else if (target < A[mid])
+                u = mid - 1;
             else
-                e = p - 1;
+                l = mid + 1;
         }
         return -1;
     }
-    int findTail(int A[], int n, int target) {
-        int s = 0;
-        int e = n - 1;
-        while (s <= e) {
-            int p = (s+e)/2;
-            if (A[p] > target)
-                e = p - 1;
-            else if (A[p] < target)
-                s = p + 1;
-            else if ((p == n-1) || (A[p+1] > A[p]))
-                return p;
+    int findLast(int A[], int n, int target) {
+        int l = 0, u = n - 1, mid;
+        while (l <= u) {
+            mid = (l+u)/2;
+            if (target == A[mid]) {
+                if ((mid == n - 1) || (A[mid+1] != A[mid]))
+                    return mid;
+                l = mid + 1;
+            } else if (target < A[mid])
+                u = mid - 1;
             else
-                s = p + 1;
+                l = mid + 1;
         }
         return -1;
     }

@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int l = 0, u = s.size() - 1;
+        while ((l < u) && !isalnum(s[l]))
+            l++;
+        while ((l < u) && !isalnum(s[u]))
+            u--;
+        while (l < u) {
+            if (tolower(s[l]) != tolower(s[u]))
+                return false;
+            l++;
+            while ((l < u) && !isalnum(s[l]))
+                l++;
+            u--;
+            while ((l < u) && !isalnum(s[u]))
+                u--;
+        }
+        return true;
+    }
+};

@@ -12,26 +12,71 @@ public:
     vector<vector<int> > levelOrder(TreeNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        vector<vector<int> > rets;
+        vector<vector<int>> rets;
         if (root == NULL)
             return rets;
-        vector<TreeNode*> inner, outer;
-        inner.push_back(root);
-        while (!inner.empty()) {
-            outer.clear();
-            vector<int> ret;
-            rets.push_back(ret);
-            while (inner.size() > 0) {
-                TreeNode* cur = *inner.begin();
-                inner.erase(inner.begin());
-                rets.back().push_back(cur->val);
-                if (cur->left)
-                    outer.push_back(cur->left);
-                if (cur->right)
-                    outer.push_back(cur->right);
+        list<TreeNode*>* inner = new list<TreeNode*>;
+        list<TreeNode*>* outer;
+        inner->push_back(root);
+        while(!inner->empty()) {
+            outer = new list<TreeNode*>;
+            rets.push_back(vector<int>(0));
+            while(!inner->empty()) {
+                TreeNode* node = inner->front();
+                inner->pop_front();
+                rets.back().push_back(node->val);
+                if (node->left)
+                    outer->push_back(node->left);
+                if (node->right)
+                    outer->push_back(node->right);
             }
+            delete inner;
             inner = outer;
         }
+        delete inner;
+        return rets;
+    }
+};
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int> > levelOrder(TreeNode *root) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<vector<int>> rets(1, vector<int>(0));
+        if (root) {
+            list<TreeNode*> queue;
+            queue.push_back(root);
+            int p = 0, ob = 0, nb = 0;
+            while (!queue.empty()) {
+                TreeNode* node = queue.front();
+                queue.pop_front();
+                rets.back().push_back(node->val);
+                if (node->left) {
+                    queue.push_back(node->left);
+                    nb++;
+                }
+                if (node->right) {
+                    queue.push_back(node->right);
+                    nb++;
+                }
+                if (p == ob) {
+                    rets.push_back(vector<int>(0));
+                    ob = nb;
+                }
+                p++;
+            }
+        }
+        rets.pop_back();
         return rets;
     }
 };

@@ -4,21 +4,15 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         bool pos = (x >= 0)?true:false;
-        string r = "";
-        while (x != 0) {
-            r += (char)('0' + abs((x%10) - 0));
-            x = x/10;
+        double posx = pos?x:-(double)x, revx = 0;
+        while (posx > 0) {
+            revx = revx*10 + posx - floor(posx/10)*10;
+            posx = floor(posx/10);
         }
-        double d = 0;
-        for (int i = 0; i < r.size(); i++)
-            d = d*10 + (r[i] - '0');
+        revx = pos?revx:-revx;
         if (!pos)
-            d *= -1;
-        if (pos && (d > (double)INT_MAX))
-            return INT_MAX;
-        if (!pos && (d > (double)INT_MIN * -1))
-            return INT_MIN;
+            return (revx < INT_MIN)?INT_MIN:revx;
         else
-            return (int)d;
+            return (revx > INT_MAX)?INT_MAX:revx;
     }
 };

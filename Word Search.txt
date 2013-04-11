@@ -4,44 +4,47 @@ public:
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
         int nrows = board.size();
-        if (nrows == 0)
+        if (!nrows)
             return false;
         int ncols = board[0].size();
-        if (ncols == 0)
+        if (!ncols)
             return false;
-        if (word == "")
+        if (word.empty())
             return true;
-        vector<vector<bool> > state;
+        bool** use = new bool*[nrows];
         for (int i = 0; i < nrows; i++) {
-            vector<bool> temp(ncols, 0);
-            state.push_back(temp);
+            use[i] = new bool[ncols];
+            memset(use[i], 0, sizeof(bool)*ncols);
         }
-        for (int i = 0; i < nrows; i++) {
+        for (int i = 0; i < nrows; i++)
             for (int j = 0; j < ncols; j++)
-                if (traverse(state, word, 0, i, j, board))
+                if (solve(board, i, j, word, 0, use))
                     return true;
-        }
         return false;
     }
-    bool traverse(vector<vector<bool> >& s, string& w, int p, int r, int c, vector<vector<char> > &b) {
-        if ((w[p] != b[r][c]) || s[r][c])
-            return false;
-        else {
-            if (p == w.size() - 1)
+    bool solve(vector<vector<char> > &b, int x, int y, string& w, int p, bool** use) {
+            if (p == w.size())
                 return true;
-            else {
-                s[r][c] = true;
-                if ((r > 0) && traverse(s, w, p+1, r-1, c, b))
-                    return true;
-                if ((c > 0) && traverse(s, w, p+1, r, c-1, b))
-                    return true;
-                if ((r < s.size() - 1) && traverse(s, w, p+1, r+1, c, b))
-                    return true;
-                if ((c < s[0].size() - 1) && traverse(s, w, p+1, r, c+1, b))
-                    return true;
-                s[r][c] = false;
+            if ((x < 0) || (y < 0) || (x >= b.size()) || (y >= b[0].size()) || use[x][y]|| (w[p] != b[x][y]))
+                return false;
+            use[x][y] = true;
+            if (solve(b, x-1, y, w, p+1, use)) {
+                use[x][y] = false;
+                return true;
             }
-        }
-        return false;
+            if (solve(b, x, y-1, w, p+1, use)) {
+                use[x][y] = false;
+                return true;
+            }
+            if (solve(b, x+1, y, w, p+1, use)) {
+                use[x][y] = false;
+                return true;
+            }
+            if (solve(b, x, y+1, w, p+1, use)) {
+                use[x][y] = false;
+                return true;
+            }
+            use[x][y] = false;
+            return false;
     }
 };

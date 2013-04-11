@@ -11,27 +11,27 @@ public:
     void connect(TreeLinkNode *root) {
         // Start typing your C/C++ solution below
         // DO NOT write int main() function
-        if (root == NULL)
+        if (!root)
             return;
-        else {
-            linklr(root);
-            while (root != NULL) {
-                root->next = NULL;
-                root = root->right;
-            }
+        connect(root->left);
+        connect(root->right);
+        TreeLinkNode *l = root->left, *r = root->right;
+        while (l) {
+            TreeLinkNode* lp = l, *rp = r;
+            l = leftMost(l);
+            r = leftMost(r);
+            while (lp->next)
+                lp = lp->next;
+            lp->next = rp;
         }
     }
-    void linklr(TreeLinkNode* root) {
-        if (root == NULL)
-            return;
-        TreeLinkNode* l = root->left;
-        TreeLinkNode* r = root->right;
-        while ((l != NULL) && (r != NULL)) {
-            l->next = r;
-            l = l->right;
-            r = r->left;
-        }
-        linklr(root->left);
-        linklr(root->right);
+    TreeLinkNode* leftMost(TreeLinkNode* root) {
+        if (!root)
+            return NULL;
+        if (root->left)
+            return root->left;
+        if (root->right)
+            return root->right;
+        return leftMost(root->next);
     }
 };
